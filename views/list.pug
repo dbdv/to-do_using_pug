@@ -1,0 +1,101 @@
+html
+    head
+        title=list.title
+        link(rel='stylesheet' href='/stylesheets/list.css')
+        link(rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200')
+
+    body(style="background-color:#313246;")
+        div.header
+            h1 To-do list
+        div.myLists 
+            h1 Mis listas
+            //- button(class="openModalList-btn" onclick="toggleModal(0)")
+            //-         span AGREGAR
+            //-         img(src="/images/circle-plus-solid.svg" )
+            ul 
+                a(href="/") Ver todo
+                each listt in LISTS 
+                    a(href=`/list/${listt.id}`)
+                        li=listt.title
+        
+        div(class="myContainer" style="background-color:white")
+            .container
+                h1( class="text-center")=list.title
+                button(onclick=`deleteList(${list.id})`) Eliminar lista
+                //- button(class="openModal-btn" onclick="toggleModal(1)")
+                //-     span AGREGAR
+                //-     img(src="/images/circle-plus-solid.svg" )
+                if ITEMS.length > 0
+                    ul(class="list" id="")
+                        each item in ITEMS         
+                            nav(class="list-nav" id=item.id)
+                            
+                                li.list-item
+                                    span=item.title
+                                    p=`Detalle: ${item.descrip}` 
+                                    p=`Prioridad: ${item.priority}`
+                                    p=`Estado: ${item.state}`
+                                    if item.deadline !== null
+                                        p=`Fecha límite: ${item.deadline}`
+                                    //- if item.Lists.length !== 0
+                                    //-     p Listas: 
+                                    //-         each list in item.Lists
+                                    //-             =`"${list.title}" `
+                                //-button(class="btn-close")
+                                button(id="delte-btn" class="btn btn-danger" onclick=`return removeItem(${item.id}, ${list.id})`) Sacar
+                else 
+                    span Esta lista está vacía.
+    script.
+        function removeItem(id_item, id_list){
+            var xhttp = new XMLHttpRequest();
+                xhttp.open("POST", `/list/unlink/${id_item}`, true); 
+                xhttp.setRequestHeader("Content-Type", "application/json");
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Response
+                        var response = this.responseText;
+                    }
+                };
+                //- console.log("id de list: ",id_list)
+                //- console.log("id de item: ",id_item)
+                var data = {"id_item": id_item, "id_list": id_list};
+
+                //- console.log("la data: ", data)
+                //- console.log(JSON.stringify(data))
+                xhttp.send(JSON.stringify(data));
+
+                //- const div = document.getElementById(id_item)//document.querySelector("#"+id);
+                //- div.classList.add("removing");
+                setTimeout(()=>{
+                    //- div.remove();
+                    location.reload();
+                }, 1000)
+            return false;
+        }
+
+        function deleteList(id){
+
+            const items = document.getElementsByClassName("list-nav");
+
+            if(items.length !== 0){
+                alert   ("La lista solo puede eliminarse si está vacía.")
+                return false;
+            }
+
+            var xhttp = new XMLHttpRequest();
+                xhttp.open("POST", `/list/delete/${id}`, true); 
+                xhttp.setRequestHeader("Content-Type", "XMLHttpRequest");
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Response
+                        var response = this.responseText;
+                    }
+                };
+                xhttp.send();
+
+                setTimeout(()=>{
+                    //- div.remove();
+                    window.location.replace("/");
+                }, 1000)
+            return false;
+        }

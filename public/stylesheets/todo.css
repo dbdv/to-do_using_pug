@@ -1,0 +1,480 @@
+@import url("https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;700&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  font-family: "Red Hat Display", sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/*  Icon from google icons  */
+
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 48;
+  border: none;
+  background: none;
+}
+/*------------------------------*/
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* position: absolute; */
+  /* margin: 5px 0; */
+  /* color: white; */
+  width: 100%;
+  /* background: #fafafa; */
+  padding: 5px 0;
+  text-align: center;
+}
+
+.header > h1 {
+  width: 200px;
+  padding: 5px;
+  border-radius: 30px;
+  background: white;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 300px;
+  font-size: 1.3rem;
+}
+
+.list-nav {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  margin: 5px;
+  transition: opacity 1s;
+}
+
+.list-item {
+  list-style-type: none;
+}
+
+.list-nav > .buttons {
+  min-width: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.list-nav > .buttons > button {
+  margin: 3px;
+}
+
+.list-nav > .buttons > #resolve-btn {
+  font-size: 0.9rem;
+  padding: 5px;
+  background: #0069d9;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  /* margin-left: 30px; */
+}
+
+.list-nav > .buttons > #unresolve-btn {
+  font-size: 0.9rem;
+  padding: 5px;
+  background: #0069d9;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  /* margin-left: 30px; */
+}
+
+.list-nav > .buttons > #delete-btn {
+  font-size: 0.9rem;
+  padding: 5px;
+  background: tomato;
+  color: white;
+  border: none;
+  border-radius: 10px;
+}
+
+.list-item > p {
+  font-size: 0.7em;
+  margin-left: 7px;
+  color: rgb(70, 67, 67);
+} 
+
+.modal-off {
+  display: none;
+}
+
+.modal {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+}
+
+.backOpacity {
+  width: 100%;
+  height: 100vh;
+  background: black;
+  opacity: 50%;
+}
+
+.newTaskForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: fixed;
+  width: 400px;
+  height: 400px;
+  padding: 15px;
+  background: #fafafa;
+  border-radius: 5px;
+  box-sizing: border-box;
+  /* margin-top: 70px; */
+}
+
+.newTaskForm > form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+/*.newTaskForm > form > div {
+   display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  margin: 15px 0;
+}*/
+
+.myLists {
+  width: 200px;
+  height: 300px;
+  background: #fafafa;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin-right: 2.5px;
+  /* margin-top: 55px; */
+  padding: 20px;
+  padding-top: 30px;
+  overflow-y: scroll;
+  
+  /* border-radius: 30px 0 0 30px; */
+}
+
+.myContainer {
+  /* max-width: 560px; */
+  min-width: 400px;
+  min-height: 50vh;
+  display: grid;
+  justify-content: center;
+  /* margin: 0 auto;   */
+  /* border-radius: 0 30px 30px 0; */
+  padding: 20px;
+  margin-left:2.5px;
+  /* margin-top: 55px; */
+  background: #fafafa !important;
+}
+
+.openModal-btn, .openModalList-btn {
+  /* background-color: #0069d9; */
+  background-color: #fff;
+  border: none;
+  border-radius: 30px;
+  padding: 3px 7px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  margin: 15px 0;
+}
+
+.openModal-btn > span,
+.openModal-btn > img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 3px;
+  text-align: center;
+  height: 25px;
+  font-size: 1.1rem;
+}
+
+.openModalList-btn > span,
+.openModalList-btn > img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 2px;
+  text-align: center;
+  height: 20px;
+  font-size: 1rem;
+}
+
+.close-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  /* margin: 1px; */
+  border: none;
+  background: transparent;
+  font-size: 1.3rem;
+  height: 20px;
+  width: 20px;
+}
+
+.myForm {
+  margin: 0;
+  margin-bottom: 20px;
+}
+
+.myForm > div {
+  width: 100%;
+  height: 100%;
+  padding: 5px;
+}
+
+.col-auto {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.newItemContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.newItemDiv {
+  background: white;
+  display: flex;
+  border: 1px solid lightgray;
+  border-radius: 30px;
+  align-items: center;
+  justify-content: space-between;
+  width: 290px;
+  margin: 3px;
+  padding: 1px;
+}
+
+.myForm > div:first-child {
+  margin-top: 20px;
+}
+
+.newItemDiv > input {
+  padding: 5px;
+  border: none;
+  border-radius: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+.newItemDiv > input:focus {
+  border: none;
+  outline: none;
+}
+
+.form-control {
+  padding: 5px;
+  /*max-width: 230px;*/
+}
+
+.navbar {
+  width: 100%;
+}
+
+/* .btn,
+.form-control {
+  border-radius: 30px;
+} */
+
+.prioritiesContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.prioritiesDiv {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-evenly;
+  border-radius: 5px;
+  padding: 3px;
+  margin: 0 5px;
+  width: 300px;
+}
+
+.prioritiesDiv .option {
+  background: #fafafa;
+  display: flex;
+  /* width: 65px; */
+  align-items: center;
+  justify-content: space-evenly;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 3px;
+  margin: 0 2px;
+  border: 1px solid lightgrey;
+  transition: all 0.3s ease;
+  flex: 1;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+input[type="date"] {
+  border: none;
+  padding: 3px;
+}
+
+.prioritiesDiv > input[type="checkbox"]:checked {
+  background: #0069d9;
+}
+
+#option-p-1:checked:checked ~ .option-1,
+#option-p-2:checked:checked ~ .option-2,
+#option-p-3:checked:checked ~ .option-3,
+#option-s-1:checked:checked ~ .option-1,
+#option-s-2:checked:checked ~ .option-2,
+#option-s-3:checked:checked ~ .option-3,
+#option-list-s-1:checked:checked ~ .option-1,
+#option-list-s-2:checked:checked ~ .option-2  {
+  border-color: #0069d9;
+  background: #0069d9;
+  color: white;
+}
+
+.modalTitle {
+  align-items: center;
+  text-align: center;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+.deadlineContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.deadline {
+  flex-direction: row;
+}
+
+.add-btn {
+  padding: 5px;
+  background: #0069d9;
+  font-size: 1.2rem;
+  color: white;
+  border: none;
+  border-radius: 10px;
+}
+
+.deleting{
+  animation: deleting 1s;
+}
+
+.deleting > button{
+  display: none;
+}
+
+.SinResolver{
+
+}
+
+.Resolviendo{
+
+}
+
+.Resuelta > li{
+  /* animation: resolving 1s; */
+  opacity: 60%;
+}
+/* 
+.Resuelta > div > button {
+  animation: resolving 1s;
+  opacity: 100%;
+} */
+
+
+
+@keyframes deleting {
+  from{
+    width: 100%;
+    opacity: 100%;
+    margin: 5px;
+  }
+  to{
+    width: 0%;
+    opacity: 0;
+    font-size: 0;
+    margin: 0;
+  }
+}
+
+@keyframes resolving {
+  from{
+    opacity: 100%;
+  }
+  to{
+    opacity: 70%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .myContainer {
+    border-radius: 0;
+    margin-top: 0;
+    min-height: 100vh;
+    margin: 0 !important;
+    width: 100%;
+  }
+
+  .labelDiv {
+    width: 100%;
+  }
+  .form-control {
+    max-width: 190px;
+  }
+
+  .btn,
+  .form-control {
+    padding: 3px;
+  }
+
+  .col-auto {
+    margin: 0;
+  }
+
+  .list-group-item {
+    padding: 3px;
+    margin-left: 5px;
+  }
+}

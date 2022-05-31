@@ -1,0 +1,328 @@
+doctype html
+html
+    head
+        title todo app
+        link(rel='stylesheet' href='/stylesheets/todo.css')
+        link(rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200')
+
+    body(style="background-color:#313246;")
+        div.header
+            h1 To-do list
+        div(style={"display":"flex",  "justify-content":"center", "width":"100%"})
+            div.myLists 
+                h1 Mis listas
+                button(class="openModalList-btn" onclick="toggleModal(0)")
+                        span AGREGAR
+                        img(src="/images/circle-plus-solid.svg" )
+                ul 
+                    each list in LISTS 
+                        a(href=`/list/${list.id}`)
+                            li=list.title
+            div.modal-off
+                div.backOpacity
+                div(class="newTaskForm newListForm")
+                    button(class="close-btn" onclick="toggleModal(0)") X
+                    form(action="/list/add" method="POST" class="myForm")
+                        div.modalTitle 
+                            h3 Nueva lista
+                        div(class="newItemContainer")
+                            div(class="newItemDiv" style="margin-left: 5px;margin-right: 2.5px;")
+                                input(class="" placeholder="Título"  name="newList" id="titleList" required="required")
+                                button(class="material-symbols-outlined" onclick="return clearTitleList()" ) clear
+                        
+                        div
+                            div.prioritiesContainer 
+                                span Estado
+                                div.prioritiesDiv 
+                                    input(type="radio" name="state-list" value="Sin resolver" id="option-list-s-1" checked)
+                                    label(for="option-list-s-1" class="option option-1") 
+                                        div.priorities 
+                                            span Sin resolver 
+                                    input(type="radio" name="state-list" value="Resuelta" id="option-list-s-2")
+                                    label(for="option-list-s-2" class="option option-2") 
+                                        div.priorities 
+                                            span Resuelta
+                        
+                        div.prioritiesContainer
+                            div.prioritiesDiv
+                                button(class="add-btn" onclick="return addList()") Agregar 
+            div(class="myContainer" style="background-color:white")
+                .container
+                    h1( class="text-center") Mis items
+                    button(class="openModal-btn" onclick="toggleModal(1)")
+                        span AGREGAR
+                        img(src="/images/circle-plus-solid.svg" )
+                    ul(class="list" id=ulTodo)
+                        each task in TASKS         
+                            nav(class=`list-nav ${task.state}` id=task.id)
+                            
+                                li.list-item
+                                    span=task.title
+                                    p=`Detalle: ${task.descrip}` 
+                                    p=`Prioridad: ${task.priority}`
+                                    p=`Estado: ${task.state}`
+                                    if task.deadline !== null
+                                        p=`Fecha límite: ${task.deadline}`
+                                    if task.Lists.length !== 0
+                                        p Listas: 
+                                            each list in task.Lists
+                                                =`"${list.title}" `
+                                //-button(class="btn-close")
+                                div.buttons
+                                    if task.state === "Resuelta"
+                                        button(id="unresolve-btn" value=task.id class="" onclick=`return unresolveTask(${task.id})`) Sin resolver
+                                    else
+                                        button(id="resolve-btn" value=task.id class="" onclick=`return resolveTask(${task.id})`) Resolver
+                                    button(id="delete-btn" value=task.id class="btn btn-danger" onclick=`return deleteTask(${task.id})`) Borrar
+            div.modal-off
+                div.backOpacity
+                div(class="newTaskForm")
+                    button(class="close-btn" onclick="toggleModal(1)") X
+                    form(action="/todo/add" method="POST" class="myForm")
+                        div.modalTitle
+                            h3 Nuevo item
+                        div(class="newItemContainer")
+                            div(class="newItemDiv" style="margin-left: 5px;margin-right: 2.5px;")
+                                input(class="" placeholder="Título"  name="newTask" id="title" required="required")
+                                button(class="material-symbols-outlined" onclick="return clearTitle()" ) clear
+                        div(class="newItemContainer")
+                            div(class="newItemDiv" style="margin-left: 5px;margin-right: 2.5px;")
+                                input(class="" placeholder="Descripción"  name="newTask" id="descrip" required="required")
+                                button(class="material-symbols-outlined" onclick="return clearDescrip()" ) clear
+                        div
+                            div.prioritiesContainer 
+                                span Prioridad
+                                div.prioritiesDiv 
+                                    input(type="radio" name="priority" value="Baja" id="option-p-1")
+                                    label(for="option-p-1" class="option option-1") 
+                                        div.priorities 
+                                            span Baja 
+                                    input(type="radio" name="priority" value="Media" id="option-p-2" checked)
+                                    label(for="option-p-2" class="option option-2") 
+                                        div.priorities 
+                                            span Medium
+                                    input(type="radio" name="priority" value="Alta" id="option-p-3")
+                                    label(for="option-p-3" class="option option-3") 
+                                        div.priorities 
+                                            span Alta
+                        div
+                            div.prioritiesContainer 
+                                span Estado
+                                div.prioritiesDiv 
+                                    input(type="radio" name="state" value="Sin resolver" id="option-s-1")
+                                    label(for="option-s-1" class="option option-1") 
+                                        div.priorities 
+                                            span Sin resolver 
+                                    input(type="radio" name="state" value="Resolviendo" id="option-s-2" checked)
+                                    label(for="option-s-2" class="option option-2") 
+                                        div.priorities 
+                                            span Resolviendo
+                                    input(type="radio" name="state" value="Resuelta" id="option-s-3")
+                                    label(for="option-s-3" class="option option-3") 
+                                        div.priorities 
+                                            span Resuelta
+                        div.deadlineContainer 
+                            div.prioritiesDiv
+                                span Fecha limite 
+                                input(type="checkbox" name="dl")
+                                input(type="date" name="dldate")
+                        div
+                            span Lista
+                            div.listsCheckboxes
+                                each list in LISTS 
+                                    input(type="checkbox" class="listCheckbox" value=list.id)
+                                    label=list.title 
+                        div.prioritiesContainer
+                            div.prioritiesDiv
+                                button(class="add-btn" onclick="return addTask()") Agregar
+        script.
+
+            function toggleModal(n){
+                const modal = document.querySelectorAll(".modal-off")[n]
+                modal.classList.toggle("modal");
+            }
+
+            function addList(){
+                console.log(document.querySelector("#titleList"));
+                const newList = {
+                    id:null,
+                    title: document.querySelector("#titleList").value,
+                    state: document.querySelector("input[name='state-list']:checked").value,
+                    resolutionDate: null,
+                    creationDate: new Date(Date.now()),
+                }
+
+                console.table(newList)
+
+                if(!newList.title.length){
+                    alert("La lista necesita un título")
+                    return false;
+                }
+
+
+                var xhttp = new XMLHttpRequest();
+                xhttp.open("POST", "/list/add", true); 
+                xhttp.setRequestHeader("Content-Type", "application/json");
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Response
+                        var response = this.responseText;
+                    }
+                };
+                var data = newList;
+                xhttp.send(JSON.stringify(data));
+                clearTitleList();
+
+                setTimeout(() => {
+                    location.reload()
+                }, 500);
+
+            
+                return false;
+            }
+
+            function addTask (){
+
+                const newTask = {
+                    id:null,
+                    title: document.querySelector("#title").value.toString(),
+                    descrip: document.querySelector("#descrip").value.toString(),
+                    priority: document.querySelector("input[name='priority']:checked").value,
+                    state: document.querySelector("input[name='state']:checked").value,
+                    creationDate: new Date(Date.now()),
+                    deadline: document.querySelector("input[name='dl']").checked ? document.querySelector("input[name='dldate']").value : null,
+                    resolutionDate: null
+                }
+                const selectedLists = document.getElementsByClassName("listCheckbox");
+                console.log(typeof selectedLists)
+                const listsID = []
+                for(const sl in selectedLists){
+                    if(selectedLists[sl].checked)
+                        listsID.push(selectedLists[sl].value);
+                }
+
+                //- console.log("ID: ",listsID);
+                //- if(!newTask.title.length || !newTask.descrip.length){
+                //-     alert("No puede ingresar una tarea sin título y descrpción.")
+                //-     return false;
+                //- }
+
+                //- console.log(typeof newTask.deadline)
+
+                if(newTask.deadline !== null &&  new Date(newTask.deadline) < new Date(Date.now())){
+                    alert("No puede elegir una fecha que ya pasó!");
+                    return false;
+                }
+
+                var xhttp = new XMLHttpRequest();
+                xhttp.open("POST", "/todo/add", true); 
+                xhttp.setRequestHeader("Content-Type", "application/json");
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Response
+                        var response = this.responseText;
+                    }
+                };
+                var data = {newTask: newTask,listsID: listsID};
+                console.log(data)
+                xhttp.send(JSON.stringify(data));
+                clearTitle();
+                clearDescrip();
+
+                setTimeout(() => {
+                    location.reload()
+                }, 500);
+
+            
+                return false;
+            }
+
+            function resolveTask(id){
+
+                var xhttp = new XMLHttpRequest();
+                xhttp.open("POST", `/todo/resolve/${id}`, true); 
+                xhttp.setRequestHeader("Content-Type", "XMLHttpRequest");
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Response
+                        var response = this.responseText;
+                    }
+                };
+                xhttp.send();
+
+                const div = document.getElementById(id)//document.querySelector("#"+id);
+                div.classList.add("resolve");
+                //- setTimeout(()=>{
+                //-     div.remove();
+                //- }, 1000)
+                setTimeout(() => {
+                    location.reload()
+                }, 500);
+
+                return false;
+            }
+
+            function unresolveTask(id){
+
+                var xhttp = new XMLHttpRequest();
+                xhttp.open("POST", `/todo/unresolve/${id}`, true); 
+                xhttp.setRequestHeader("Content-Type", "XMLHttpRequest");
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Response
+                        var response = this.responseText;
+                    }
+                };
+                xhttp.send();
+
+                const div = document.getElementById(id)//document.querySelector("#"+id);
+                div.classList.remove("resolve");
+                //- setTimeout(()=>{
+                //-     div.remove();
+                //- }, 1000)
+                setTimeout(() => {
+                    location.reload()
+                }, 500);
+
+                return false;
+            }
+
+            function deleteTask (id){
+
+
+                //console.log(id)
+
+                var xhttp = new XMLHttpRequest();
+                xhttp.open("POST", `/todo/delete/${id}`, true); 
+                xhttp.setRequestHeader("Content-Type", "XMLHttpRequest");
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Response
+                        var response = this.responseText;
+                    }
+                };
+                xhttp.send();
+
+                const div = document.getElementById(id)//document.querySelector("#"+id);
+                div.classList.add("deleting");
+                setTimeout(()=>{
+                    div.remove();
+                }, 1000)
+
+                return false;
+            }
+
+            function clearTitle(){
+                document.querySelector("#title").value = ""
+                return false;
+            }
+
+            function clearTitleList(){
+                document.querySelector("#titleList").value = ""
+                return false;
+            }
+
+            function clearDescrip(){
+                document.querySelector("#descrip").value = ""
+                return false;
+            }
