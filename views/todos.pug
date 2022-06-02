@@ -52,6 +52,22 @@ html
                     button(class="openModal-btn" onclick="toggleModal(1)")
                         span AGREGAR
                         img(src="/images/circle-plus-solid.svg" )
+                    div.orderBy 
+                        span Ordenar por: 
+                        div()
+                            div(id="optionsParent")
+                                //input(type="checkbox" name="priority" id="priority" class="orderOption" )
+                                label(for="priority" id="priority" class=`opPriority ${selected !==null && selected.priority !== undefined ? "opSelected": ""}`) Prioridad 
+                                //input(type="checkbox" name="creationDate" id="creationDate" class="orderOption" )
+                                label(for="creationDate" id="creationDate" class=`opCreationDate ${selected !==null && selected.creationDate !== undefined ? "opSelected": ""}`) Fecha de creacion
+                                //input(type="checkbox" name="deadline" id="deadline" class="orderOption")
+                                label(for="deadline" id="deadline" class=`opDeadline ${selected !==null && selected.deadline !== undefined ? "opSelected": ""}`) Fecha límite
+                            div.direc
+                                input(type="radio" name="direc" id="ASC" value="ASC" class="orderRadio")
+                                label(for="ASC" class=`asc ${selected !==null && selected.ASC !== undefined ? "opSelected":""}` name="direc") Ascendente
+                                input(type="radio" name="direc" id="DESC" value="DESC" class="orderRadio")
+                                label(for="DESC" class=`desc ${selected !==null && selected.DESC !== undefined ? "opSelected":""}` name="direc") Descendente
+                            button(onclick="setOrder();") Ordenar
                     ul(class="list" id=ulTodo)
                         each task in TASKS         
                             nav(class=`list-nav ${task.state}` id=task.id)
@@ -69,10 +85,14 @@ html
                                                 =`"${list.title}" `
                                 //-button(class="btn-close")
                                 div.buttons
-                                    if task.state === "Resuelta"
-                                        button(id="unresolve-btn" value=task.id class="" onclick=`return unresolveTask(${task.id})`) Sin resolver
+                                    if task.state !== "Resuelta"
+                                        //button(id="unresolve-btn" value=task.id class="" onclick=`return markAsUnresolve(${task.id})`) Sin resolver
+                                        if task.state === "Resolviendo"
+                                            button(id="resolve-btn" value=task.id class="" onclick=`return markAsUnresolve(${task.id})`) Sin resolver
+                                        else
+                                            button(id="resolve-btn" value=task.id class="" onclick=`return markAsResolving(${task.id})`) Resolviendo
+                                        button(id="resolve-btn" value=task.id class="" onclick=`return markAsResolve(${task.id})`) Resolver
                                     else
-                                        button(id="resolve-btn" value=task.id class="" onclick=`return resolveTask(${task.id})`) Resolver
                                     button(id="delete-btn" value=task.id class="btn btn-danger" onclick=`return deleteTask(${task.id})`) Borrar
             div.modal-off
                 div.backOpacity
@@ -136,6 +156,15 @@ html
                             div.prioritiesDiv
                                 button(class="add-btn" onclick="return addTask()") Agregar
         script.
+
+            window.onload = ()=>{
+                const optionsParent = document.getElementById("optionsParent");
+                optionsParent.addEventListener("click", (e)=>{
+                    console.log(e)
+                    if(e.target.name != "direc" && e.target.tagName === "LABEL")
+                        e.target.classList.toggle("opSelected");
+                })
+            }
 
             function toggleModal(n){
                 const modal = document.querySelectorAll(".modal-off")[n]
@@ -215,7 +244,7 @@ html
                 }
 
                 var xhttp = new XMLHttpRequest();
-                xhttp.open("POST", "/todo/add", true); 
+                xhttp.open("POST", "/item/add", true); 
                 xhttp.setRequestHeader("Content-Type", "application/json");
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
@@ -237,10 +266,10 @@ html
                 return false;
             }
 
-            function resolveTask(id){
+            function markAsResolve(id){
 
                 var xhttp = new XMLHttpRequest();
-                xhttp.open("POST", `/todo/resolve/${id}`, true); 
+                xhttp.open("POST", `/item/markAsResolved/${id}`, true); 
                 xhttp.setRequestHeader("Content-Type", "XMLHttpRequest");
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
@@ -262,10 +291,35 @@ html
                 return false;
             }
 
-            function unresolveTask(id){
+            function markAsUnresolve(id){
 
                 var xhttp = new XMLHttpRequest();
-                xhttp.open("POST", `/todo/unresolve/${id}`, true); 
+                xhttp.open("POST", `/item/markAsUnresolve/${id}`, true); 
+                xhttp.setRequestHeader("Content-Type", "XMLHttpRequest");
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Response
+                        var response = this.responseText;
+                    }
+                };
+                xhttp.send();
+
+                const div = document.getElementById(id)//document.querySelector("#"+id);
+                div.classList.remove("resolve");
+                //- setTimeout(()=>{
+                //-     div.remove();
+                //- }, 1000)
+                setTimeout(() => {
+                    location.reload()
+                }, 500);
+
+                return false;
+            }
+
+            function markAsResolving(id){
+
+                var xhttp = new XMLHttpRequest();
+                xhttp.open("POST", `/item/markAsResolving/${id}`, true); 
                 xhttp.setRequestHeader("Content-Type", "XMLHttpRequest");
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
@@ -293,7 +347,7 @@ html
                 //console.log(id)
 
                 var xhttp = new XMLHttpRequest();
-                xhttp.open("POST", `/todo/delete/${id}`, true); 
+                xhttp.open("POST", `/item/delete/${id}`, true); 
                 xhttp.setRequestHeader("Content-Type", "XMLHttpRequest");
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
@@ -310,6 +364,55 @@ html
                 }, 1000)
 
                 return false;
+            }
+
+            function setOrder(){
+
+                const options = document.getElementsByClassName("orderOption");
+                const selected = document.getElementsByClassName("opSelected");
+                const radios = document.getElementsByClassName("orderRadio");
+
+                var order = [];
+
+                console.table(selected)
+
+                //- for(const o in options){
+                //-     if(options[o].checked)
+                //-         order.push(options[o].name);
+                //- }
+
+                for(const s in selected){
+                    console.log(selected[s].id)
+                    if(selected[s].id !== undefined && selected[s].id !== "")
+                        order.push(`${selected[s].id}`);
+                }
+
+                //- console.log(radios)
+                
+                if(order.length === 0){
+                    alert("No ha seleccionado un orden;")
+                    return false;
+                }
+
+                const data = {
+                    "order": order,
+                    "direc": "ASC"
+                } 
+
+                document.location.href = `/todo/orderBy/${order.join("/")}/DESC`;
+
+                //- var xhttp = new XMLHttpRequest();
+                //- xhttp.open("GET", `/todo/orderBy/${order.join("/")}/DESC`, true); 
+                //- xhttp.setRequestHeader("Content-Type", "XMLHttpRequest");
+                //- xhttp.onreadystatechange = function() {
+                //-     if (this.readyState == 4 && this.status == 200) {
+                //-         // Response
+                //-         var response = this.responseText;
+                //-     }
+                //- };
+                //- //- xhttp.send(JSON.stringify(data));
+                //- xhttp.send()
+                //- //return false;
             }
 
             function clearTitle(){
