@@ -24,12 +24,26 @@ const InList = db.define("InLists", {
 
 Item.belongsToMany(List, {
   through: InList,
-  foreignKey: "id_item"
+  foreignKey: "id_item",
 });
 
 List.belongsToMany(Item, {
   through: InList,
-  foreignKey: "id_list"
+  foreignKey: "id_list",
+});
+
+Item.hasMany(InList, {
+  foreignKey: "id_list",
+});
+List.hasMany(InList, {
+  foreignKey: "id_item",
+});
+
+InList.belongsTo(Item, {
+  foreignKey: "id_item",
+});
+InList.belongsTo(List, {
+  foreignKey: "id_list",
 });
 
 module.exports = InList;

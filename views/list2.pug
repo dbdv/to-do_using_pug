@@ -1,13 +1,13 @@
 doctype html
 html
     head
-        title todo app
+        title=list.title
         link(rel='stylesheet' href='/stylesheets/todo.css')
         link(rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200')
 
     body(style="background-color:#313246;")
         div.header
-            h1 To-do list
+            h1(id=list.id class="title") To-do list
         div(style={"display":"flex",  "justify-content":"center", "width":"100%"})
             div.myLists 
                 h1 Mis listas
@@ -48,7 +48,8 @@ html
                                 button(class="add-btn" onclick="return addList()") Agregar 
             div(class="myContainer" style="background-color:white")
                 .container
-                    h1( class="text-center") Mis items
+                    h1( class="text-center")=list.title
+                    button(onclick=`deleteList(${list.id})`) Eliminar lista
                     button(class="openModal-btn" onclick="toggleModal(1)")
                         span AGREGAR
                         img(src="/images/circle-plus-solid.svg" )
@@ -64,42 +65,47 @@ html
                                 label(for="deadline" id="deadline" class=`opDeadline ${selected !==null && selected.deadline !== undefined ? "opSelected": ""}`) Fecha límite
                             div.direc
                                 if selected !== null && selected.ASC 
-                                    input(type="radio" name="direc" id="ASC" value="ASC" class="orderRadio" checked)
-                                    label(for="ASC" class=`asc opSelected` name="direc") Ascendente
-                                    input(type="radio" name="direc" id="DESC" value="DESC" class="orderRadio")
+                                    input(type="radio" name="direc" id="ASC" value="ASC" class="orderRadio orderRadioASC" checked)
+                                    label(for="ASC" class=`asc ` name="direc") Ascendente
+                                    input(type="radio" name="direc" id="DESC" value="DESC" class="orderRadio orderRadioDESC")
                                     label(for="DESC" class=`desc` name="direc") Descendente
                                 else 
                                     input(type="radio" name="direc" id="ASC" value="ASC" class="orderRadio")
                                     label(for="ASC" class=`asc ` name="direc") Ascendente
                                     input(type="radio" name="direc" id="DESC" value="DESC" class="orderRadio" checked)
-                                    label(for="DESC" class=`desc opSelected` name="direc") Descendente
+                                    label(for="DESC" class=`desc ` name="direc") Descendente
                             button(onclick="setOrder();") Ordenar
-                    ul(class="list" id=ulTodo)
-                        each task in TASKS         
-                            nav(class=`list-nav ${task.state}` id=task.id)
-                            
-                                li.list-item
-                                    span=task.title
-                                    p=`Detalle: ${task.descrip}` 
-                                    p=`Prioridad: ${task.priority}`
-                                    p=`Estado: ${task.state}`
-                                    if task.deadline !== null
-                                        p=`Fecha límite: ${task.deadline}`
-                                    if task.Lists.length !== 0
-                                        p Listas: 
-                                            each list in task.Lists
-                                                =`"${list.title}" `
-                                //-button(class="btn-close")
-                                div.buttons
-                                    if task.state !== "Resuelta"
-                                        //button(id="unresolve-btn" value=task.id class="" onclick=`return markAsUnresolve(${task.id})`) Sin resolver
-                                        if task.state === "Resolviendo"
-                                            button(id="resolve-btn" value=task.id class="" onclick=`return markAsUnresolve(${task.id})`) Sin resolver
+                    if ITEMS.length > 0
+                        ul(class="list" id=ulTodo)
+                            each task in ITEMS         
+                                nav(class=`list-nav ${task.state}` id=task.id)
+                                
+                                    li.list-item
+                                        span=task.title
+                                        p=`Detalle: ${task.descrip}` 
+                                        p=`Prioridad: ${task.priority}`
+                                        p=`Estado: ${task.state}`
+                                        if task.deadline !== null
+                                            p=`Fecha límite: ${task.deadline}`
+                                        if task.Lists !== undefined && task.Lists.length !== 0
+                                            p Listas: 
+                                                each list in task.Lists
+                                                    =`"${list.title}" `
+                                    //-button(class="btn-close")
+                                    div.buttons
+                                        if task.state !== "Resuelta"
+                                            //button(id="unresolve-btn" value=task.id class="" onclick=`return markAsUnresolve(${task.id})`) Sin resolver
+                                            if task.state === "Resolviendo"
+                                                button(id="resolve-btn" value=task.id class="" onclick=`return markAsUnresolve(${task.id})`) Sin resolver
+                                            else
+                                                button(id="resolve-btn" value=task.id class="" onclick=`return markAsResolving(${task.id})`) Resolviendo
+                                            button(id="resolve-btn" value=task.id class="" onclick=`return markAsResolve(${task.id})`) Resolver
                                         else
-                                            button(id="resolve-btn" value=task.id class="" onclick=`return markAsResolving(${task.id})`) Resolviendo
-                                        button(id="resolve-btn" value=task.id class="" onclick=`return markAsResolve(${task.id})`) Resolver
-                                    else
-                                    button(id="delete-btn" value=task.id class="btn btn-danger" onclick=`return deleteTask(${task.id})`) Borrar
+                                        button(id="delte-btn" class="btn btn-danger" onclick=`return removeItem(${task.id}, ${list.id})`) Sacar 
+                                        ////-
+                                        button(id="delete-btn" value=task.id class="btn btn-danger" onclick=`return deleteTask(${task.id})`) Borrar
+                    else 
+                        span Esta lista está vacía.
             div.modal-off
                 div.backOpacity
                 div(class="newTaskForm")
@@ -163,6 +169,8 @@ html
                                 button(class="add-btn" onclick="return addTask()") Agregar
         script.
 
+            let idList;
+
             window.onload = ()=>{
                 const optionsParent = document.getElementById("optionsParent");
                 optionsParent.addEventListener("click", (e)=>{
@@ -170,6 +178,9 @@ html
                     if(e.target.name != "direc" && e.target.tagName === "LABEL")
                         e.target.classList.toggle("opSelected");
                 })
+
+                idList = document.querySelector(".title").id;
+                console.log(idList);
             }
 
             function toggleModal(n){
@@ -228,13 +239,13 @@ html
                     deadline: document.querySelector("input[name='dl']").checked ? document.querySelector("input[name='dldate']").value : null,
                     resolutionDate: null
                 }
-                const selectedLists = document.getElementsByClassName("listCheckbox");
-                console.log(typeof selectedLists)
-                const listsID = []
-                for(const sl in selectedLists){
-                    if(selectedLists[sl].checked)
-                        listsID.push(selectedLists[sl].value);
-                }
+                //- const selectedLists = document.getElementsByClassName("listCheckbox");
+                //- console.log(typeof selectedLists)
+                
+                //- for(const sl in selectedLists){
+                //-     if(selectedLists[sl].checked)
+                //-         listsID.push(selectedLists[sl].value);
+                //- }
 
                 //- console.log("ID: ",listsID);
                 //- if(!newTask.title.length || !newTask.descrip.length){
@@ -250,7 +261,7 @@ html
                 }
 
                 var xhttp = new XMLHttpRequest();
-                xhttp.open("POST", "/item/add", true); 
+                xhttp.open("POST", `list/${idList}/item/add`, true); 
                 xhttp.setRequestHeader("Content-Type", "application/json");
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
@@ -258,7 +269,7 @@ html
                         var response = this.responseText;
                     }
                 };
-                var data = {newTask: newTask,listsID: listsID};
+                var data = {newTask: newTask};
                 console.log(data)
                 xhttp.send(JSON.stringify(data));
                 clearTitle();
@@ -403,20 +414,8 @@ html
                     return false;
                 }
 
-                document.location.href = `/todo/orderBy/${order.join("/")}/${direc}`;
+                document.location.href = `/list/${idList}/orderBy/${order.join("/")}/${direc}`;
 
-                //- var xhttp = new XMLHttpRequest();
-                //- xhttp.open("GET", `/todo/orderBy/${order.join("/")}/DESC`, true); 
-                //- xhttp.setRequestHeader("Content-Type", "XMLHttpRequest");
-                //- xhttp.onreadystatechange = function() {
-                //-     if (this.readyState == 4 && this.status == 200) {
-                //-         // Response
-                //-         var response = this.responseText;
-                //-     }
-                //- };
-                //- //- xhttp.send(JSON.stringify(data));
-                //- xhttp.send()
-                //- //return false;
             }
 
             function clearTitle(){
@@ -431,5 +430,59 @@ html
 
             function clearDescrip(){
                 document.querySelector("#descrip").value = ""
+                return false;
+            }
+
+            function removeItem(id_item, id_list){
+            var xhttp = new XMLHttpRequest();
+                xhttp.open("POST", `/list/unlink/${id_item}`, true); 
+                xhttp.setRequestHeader("Content-Type", "application/json");
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Response
+                        var response = this.responseText;
+                    }
+                };
+                //- console.log("id de list: ",id_list)
+                //- console.log("id de item: ",id_item)
+                var data = {"id_item": id_item, "id_list": id_list};
+
+                //- console.log("la data: ", data)
+                //- console.log(JSON.stringify(data))
+                xhttp.send(JSON.stringify(data));
+
+                //- const div = document.getElementById(id_item)//document.querySelector("#"+id);
+                //- div.classList.add("removing");
+                setTimeout(()=>{
+                    //- div.remove();
+                    location.reload();
+                }, 1000)
+            return false;
+            }
+
+            function deleteList(id){
+
+                const items = document.getElementsByClassName("list-nav");
+
+                if(items.length !== 0){
+                    alert   ("La lista solo puede eliminarse si está vacía.")
+                    return false;
+                }
+
+                var xhttp = new XMLHttpRequest();
+                    xhttp.open("POST", `/list/delete/${id}`, true); 
+                    xhttp.setRequestHeader("Content-Type", "XMLHttpRequest");
+                    xhttp.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 200) {
+                            // Response
+                            var response = this.responseText;
+                        }
+                    };
+                    xhttp.send();
+
+                    setTimeout(()=>{
+                        //- div.remove();
+                        window.location.replace("/");
+                    }, 1000)
                 return false;
             }

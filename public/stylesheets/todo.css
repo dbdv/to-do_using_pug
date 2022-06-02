@@ -116,7 +116,7 @@ body {
   font-size: 0.7em;
   margin-left: 7px;
   color: rgb(70, 67, 67);
-} 
+}
 
 .modal-off {
   display: none;
@@ -159,7 +159,6 @@ body {
   align-items: center;
 }
 
-
 /*.newTaskForm > form > div {
    display: flex;
   flex-direction: column;
@@ -180,7 +179,7 @@ body {
   padding: 20px;
   padding-top: 30px;
   overflow-y: scroll;
-  
+
   /* border-radius: 30px 0 0 30px; */
 }
 
@@ -193,12 +192,13 @@ body {
   /* margin: 0 auto;   */
   /* border-radius: 0 30px 30px 0; */
   padding: 20px;
-  margin-left:2.5px;
+  margin-left: 2.5px;
   /* margin-top: 55px; */
   background: #fafafa !important;
 }
 
-.openModal-btn, .openModalList-btn {
+.openModal-btn,
+.openModalList-btn {
   /* background-color: #0069d9; */
   background-color: #fff;
   border: none;
@@ -261,7 +261,7 @@ body {
   padding-right: 0;
 }
 
-.newItemContainer{
+.newItemContainer {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -346,45 +346,65 @@ body {
 .orderBy {
   display: flex;
   flex-direction: column;
-  font-size: .8rem;
+  font-size: 0.8rem;
+  width: 100%;
+}
+
+.orderBy > span {
+  margin: 5px 0;
 }
 
 .orderBy > div {
   display: flex;
   align-items: center;
+  width: 100%;
+  justify-content: space-between;
 }
 
-.opPriority, .opCreationDate, .opDeadline{
+.opPriority,
+.opCreationDate,
+.opDeadline {
   padding: 3px;
   margin: 3px;
   background: lightgray;
 }
 
-
-input[type="radio"], input[type="checkbox"] {
+input[type="radio"],
+input[type="checkbox"] {
   display: none;
 }
 
-
-
-.direc, .orderBy{
+.direc,
+.orderBy {
   padding: 1px;
   margin: 2px;
 }
 
-.asc, .desc, .opPriority, .opCreationDate, .opDeadline {
+/* .direc{
+  margin-left: 8px;
+} */
+
+.asc,
+.desc,
+.opPriority,
+.opCreationDate,
+.opDeadline {
   padding: 3px;
   margin: 2px;
   border: 1px solid lightgray;
   border-radius: 10px;
 }
 
-.opSelected, #ASC:checked ~ .asc, #DESC:checked ~ .desc{
+.opSelected,
+#ASC:checked ~ .asc,
+#DESC:checked ~ .desc {
   background: white;
   border: 1px solid #0069d9;
 }
 
-.asc:hover, .desc:hover, label {
+.asc:hover,
+.desc:hover,
+label {
   cursor: pointer;
 }
 
@@ -398,7 +418,8 @@ input[type="date"] {
   padding: 3px;
 }
 
-.prioritiesDiv > input[type="checkbox"]:checked, .orderBy > input[type="checkbox"]:checked{
+.prioritiesDiv > input[type="checkbox"]:checked,
+.orderBy > input[type="checkbox"]:checked {
   background: #0069d9;
 }
 
@@ -409,7 +430,9 @@ input[type="date"] {
 #option-s-2:checked:checked ~ .option-2,
 #option-s-3:checked:checked ~ .option-3,
 #option-list-s-1:checked:checked ~ .option-1,
-#option-list-s-2:checked:checked ~ .option-2  {
+#option-list-s-2:checked:checked ~ .option-2,
+#ASC:checked:checked ~ .orderRadioASC,
+#DESC:checked:checked ~ .orderRadioDESC {
   border-color: #0069d9;
   background: #0069d9;
   color: white;
@@ -443,23 +466,21 @@ button:hover {
   border-radius: 10px;
 }
 
-.deleting{
+.deleting {
   animation: deleting 1s;
 }
 
-.deleting > button{
+.deleting > button {
   display: none;
 }
 
-.SinResolver{
-
+.SinResolver {
 }
 
-.Resolviendo{
-
+.Resolviendo {
 }
 
-.Resuelta > li{
+.Resuelta > li {
   /* animation: resolving 1s; */
   opacity: 60%;
 }
@@ -469,15 +490,13 @@ button:hover {
   opacity: 100%;
 } */
 
-
-
 @keyframes deleting {
-  from{
+  from {
     width: 100%;
     opacity: 100%;
     margin: 5px;
   }
-  to{
+  to {
     width: 0%;
     opacity: 0;
     font-size: 0;
@@ -486,10 +505,10 @@ button:hover {
 }
 
 @keyframes resolving {
-  from{
+  from {
     opacity: 100%;
   }
-  to{
+  to {
     opacity: 70%;
   }
 }

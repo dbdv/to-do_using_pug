@@ -12,7 +12,6 @@ module.exports.getHomeInfo = async (req, res, next) => {
 
     let items;
 
-    
     items = await Item.findAll({
       include: "Lists",
     });
@@ -24,7 +23,7 @@ module.exports.getHomeInfo = async (req, res, next) => {
 };
 
 module.exports.setOrder = async (req, res, next) => {
-  console.log(Object.keys(req.params));
+  // console.log(Object.keys(req.params));
 
   let options = [];
   let selected = {};
@@ -38,7 +37,7 @@ module.exports.setOrder = async (req, res, next) => {
 
   selected[req.params.direc] = true;
 
-  console.table(selected)
+  // console.table(selected)
 
   try {
     await db.authenticate();
