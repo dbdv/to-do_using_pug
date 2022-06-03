@@ -12,9 +12,10 @@ module.exports.getHomeInfo = async (req, res, next) => {
 
     let items;
 
-    items = await Item.findAll({
-      include: "Lists",
-    });
+    items = await Item.findAll(/* {
+      include: List,
+    } */);
+    console.log(items);
     let lists = await List.findAll();
     res.render("todos.pug", { TASKS: items, LISTS: lists, selected: null });
   } catch (error) {
@@ -46,7 +47,7 @@ module.exports.setOrder = async (req, res, next) => {
     let items;
 
     items = await Item.findAll({
-      include: "Lists",
+      /* include: "Lists", */
       order: [...options],
     });
     let lists = await List.findAll();

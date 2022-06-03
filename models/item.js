@@ -1,5 +1,7 @@
 var { Model, DataTypes } = require("sequelize");
 var db = require("./db");
+const InList = require("./in_list");
+const List = require("./list");
 
 class Item extends Model {}
 Item.init(
@@ -24,10 +26,7 @@ Item.init(
       type: DataTypes.STRING,
     },
     priority: {
-      type: DataTypes.STRING,
-      // validate:{
-      //   in: ["Low", "Medium", "High"]
-      // }
+      type: DataTypes.INTEGER,
     },
     deadline: {
       type: DataTypes.DATE,
@@ -35,9 +34,10 @@ Item.init(
     },
     state: {
       type: DataTypes.STRING,
-      // validate:{
-      //   in: ["Unsolved", "Solving", "Solved"]
-      // }
+    },
+    id_user: {
+      type: DataTypes.INTEGER,
+      foreignKey: true,
     },
   },
   { sequelize: db, modelName: "Item" }

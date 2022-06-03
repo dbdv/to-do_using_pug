@@ -1,6 +1,7 @@
 var { Model, DataTypes } = require("sequelize");
 var db = require("./db");
-
+const InList = require("./in_list");
+const Item = require("./item");
 
 class List extends Model {}
 List.init(
@@ -26,6 +27,14 @@ List.init(
       // validate:{
       //   in: ["Unsolved", "Solving", "Solved"]
       // }
+    },
+    id_user: {
+      type: DataTypes.INTEGER,
+      foreignKey: true,
+    },
+    id_category: {
+      type: DataTypes.INTEGER,
+      foreignKey: true,
     },
   },
   { sequelize: db, modelName: "List" }

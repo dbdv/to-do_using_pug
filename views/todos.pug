@@ -65,27 +65,34 @@ html
                             div.direc
                                 if selected !== null && selected.ASC 
                                     input(type="radio" name="direc" id="ASC" value="ASC" class="orderRadio" checked)
-                                    label(for="ASC" class=`asc opSelected` name="direc") Ascendente
+                                    label(for="ASC" class=`asc` name="direc") Ascendente
                                     input(type="radio" name="direc" id="DESC" value="DESC" class="orderRadio")
                                     label(for="DESC" class=`desc` name="direc") Descendente
                                 else 
                                     input(type="radio" name="direc" id="ASC" value="ASC" class="orderRadio")
                                     label(for="ASC" class=`asc ` name="direc") Ascendente
                                     input(type="radio" name="direc" id="DESC" value="DESC" class="orderRadio" checked)
-                                    label(for="DESC" class=`desc opSelected` name="direc") Descendente
-                            button(onclick="setOrder();") Ordenar
+                                    label(for="DESC" class=`desc` name="direc") Descendente
+                            button(onclick="cleanOrder();" style={"padding":"2px 5px"}) X
+                            button(onclick="setOrder();" style={"padding":"2px"}) Ordenar
                     ul(class="list" id=ulTodo)
                         each task in TASKS         
                             nav(class=`list-nav ${task.state}` id=task.id)
                             
                                 li.list-item
                                     span=task.title
-                                    p=`Detalle: ${task.descrip}` 
-                                    p=`Prioridad: ${task.priority}`
+                                    p=`Detalle: ${task.descrip}`
+                                    case task.priority
+                                        when 1
+                                            p Prioridad: baja
+                                        when 2
+                                            p Prioridad: media
+                                        when 3
+                                            p Prioridad: alta
                                     p=`Estado: ${task.state}`
                                     if task.deadline !== null
                                         p=`Fecha límite: ${task.deadline}`
-                                    if task.Lists.length !== 0
+                                    if task.Lists !== undefined && task.Lists.length !== 0
                                         p Listas: 
                                             each list in task.Lists
                                                 =`"${list.title}" `
@@ -405,18 +412,11 @@ html
 
                 document.location.href = `/todo/orderBy/${order.join("/")}/${direc}`;
 
-                //- var xhttp = new XMLHttpRequest();
-                //- xhttp.open("GET", `/todo/orderBy/${order.join("/")}/DESC`, true); 
-                //- xhttp.setRequestHeader("Content-Type", "XMLHttpRequest");
-                //- xhttp.onreadystatechange = function() {
-                //-     if (this.readyState == 4 && this.status == 200) {
-                //-         // Response
-                //-         var response = this.responseText;
-                //-     }
-                //- };
-                //- //- xhttp.send(JSON.stringify(data));
-                //- xhttp.send()
-                //- //return false;
+               
+            }
+
+            function cleanOrder(){
+                document.location.href = `/todo/`;
             }
 
             function clearTitle(){
