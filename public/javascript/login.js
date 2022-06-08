@@ -10,12 +10,12 @@ function showError(elementClass) {
   document.querySelector(`.${elementClass}`).classList.add("error-on");
 }
 
-function login() {
-  const username = document.querySelector("#username").value;
+async function login() {
+  const mail = document.querySelector("#mail").value;
   password = document.querySelector("#password").value;
 
-  if (!username) {
-    showError("username-error");
+  if (!mail) {
+    showError("mail-error");
     return;
   }
   if (!password) {
@@ -23,5 +23,22 @@ function login() {
     return;
   }
 
-  console.log(username, password);
+  fetch("/login/in", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ mail: mail, password: password }),
+  })
+    .then((res) => {
+      console.log(res);
+      if (res.status == 404) {
+        showError("mail-error");
+      }
+    })
+    .finally((res) => {
+      console.log(res);
+      console.log("end");
+    });
 }

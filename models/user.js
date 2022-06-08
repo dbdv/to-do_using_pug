@@ -21,7 +21,7 @@ User.init(
       type: DataTypes.STRING,
     },
   },
-  { sequelize: db, modelName: "Priority" }
+  { sequelize: db, modelName: "User" }
 );
 
 module.exports = User;

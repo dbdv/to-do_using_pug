@@ -12,6 +12,7 @@ var indexRouter = require("./routes/index");
 var todoRouter = require("./routes/todo");
 var itemRouter = require("./routes/item");
 var listRouter = require("./routes/list");
+var loginRouter = require("./routes/login");
 
 var app = express();
 
@@ -31,6 +32,7 @@ app.use("/", indexRouter);
 app.use("/todo", todoRouter);
 app.use("/list", listRouter);
 app.use("/item", itemRouter);
+app.use("/login", loginRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

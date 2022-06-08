@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 04-06-2022 a las 18:42:59
+-- Tiempo de generación: 08-06-2022 a las 10:56:44
 -- Versión del servidor: 10.4.24-MariaDB
--- Versión de PHP: 8.1.6
+-- Versión de PHP: 7.4.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `db_todo_prueba`
+-- Base de datos: `test1`
 --
 
 -- --------------------------------------------------------
@@ -44,34 +44,13 @@ INSERT INTO `Categories` (`id`, `cat`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `InLists`
---
-
-CREATE TABLE `InLists` (
-  `id_item` int(11) NOT NULL,
-  `id_list` int(11) NOT NULL,
-  `createdAt` date NOT NULL,
-  `updatedAt` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `InLists`
---
-
-INSERT INTO `InLists` (`id_item`, `id_list`, `createdAt`, `updatedAt`) VALUES
-(1, 1, '2022-05-31', '2022-05-31'),
-(1, 2, '2022-05-31', '2022-05-31'),
-(2, 1, '2022-05-31', '2022-05-31');
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `Items`
 --
 
 CREATE TABLE `Items` (
   `id` int(11) NOT NULL,
   `id_user` int(11) NOT NULL,
+  `id_list` int(11) DEFAULT NULL,
   `title` varchar(50) NOT NULL,
   `descrip` varchar(250) NOT NULL,
   `state` varchar(50) NOT NULL,
@@ -87,10 +66,13 @@ CREATE TABLE `Items` (
 -- Volcado de datos para la tabla `Items`
 --
 
-INSERT INTO `Items` (`id`, `id_user`, `title`, `descrip`, `state`, `priority`, `deadline`, `resolutionDate`, `creationDate`, `createdAt`, `updatedAt`) VALUES
-(1, 1, 'Item de prueba 1', 'descripcion 1', 'Sin resolver', 2, NULL, NULL, '2022-05-31', '2022-05-31', '2022-06-01'),
-(2, 1, 'Item de prueba  2', 'Descripcion 2', 'Resuelta', 3, '2022-06-16', NULL, '2022-05-31', '2022-05-31', '2022-06-01'),
-(3, 1, 'sdfsd', 'sgsdgsd', 'Resolviendo', 2, NULL, NULL, '2022-06-01', '2022-06-01', '2022-06-01');
+INSERT INTO `Items` (`id`, `id_user`, `id_list`, `title`, `descrip`, `state`, `priority`, `deadline`, `resolutionDate`, `creationDate`, `createdAt`, `updatedAt`) VALUES
+(1, 1, NULL, 'Item de prueba 1', 'descripcion 1', 'Sin resolver', 2, NULL, NULL, '2022-05-31', '2022-05-31', '2022-06-01'),
+(2, 1, NULL, 'Item de prueba  2', 'Descripcion 2', 'Resuelta', 3, '2022-06-16', NULL, '2022-05-31', '2022-05-31', '2022-06-01'),
+(9, 1, NULL, 'probandou', 'asdasd', 'Resolviendo', 2, NULL, NULL, '2022-06-07', '2022-06-07', '2022-06-07'),
+(11, 1, NULL, 'dsads', 'asdasd', 'Resolviendo', 2, NULL, NULL, '2022-06-07', '2022-06-07', '2022-06-07'),
+(12, 1, NULL, 'iujndfsguisdgoijsdf', 'fhuisfdhiusdfiuhsdfsdf', 'Resolviendo', 2, NULL, NULL, '2022-06-07', '2022-06-07', '2022-06-07'),
+(13, 1, 1, 'sdgsdgsdg', 'sdgsdgsd', 'Resolviendo', 2, NULL, NULL, '2022-06-07', '2022-06-07', '2022-06-07');
 
 -- --------------------------------------------------------
 
@@ -148,16 +130,18 @@ CREATE TABLE `Users` (
   `id` int(11) NOT NULL,
   `name` varchar(30) NOT NULL,
   `email` varchar(30) NOT NULL,
-  `pass` varchar(100) NOT NULL
+  `pass` varchar(100) NOT NULL,
+  `createdAt` date NOT NULL,
+  `updatedAt` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `Users`
 --
 
-INSERT INTO `Users` (`id`, `name`, `email`, `pass`) VALUES
-(1, 'Fernanda', 'unmail@mail.com', 'unapass'),
-(2, 'Julio', 'otromail@mail.com', 'otrapass');
+INSERT INTO `Users` (`id`, `name`, `email`, `pass`, `createdAt`, `updatedAt`) VALUES
+(1, 'Fernanda', 'unmail@mail.com', 'unapass', '0000-00-00', '0000-00-00'),
+(2, 'Julio', 'otromail@mail.com', 'otrapass', '0000-00-00', '0000-00-00');
 
 --
 -- Índices para tablas volcadas
@@ -170,19 +154,13 @@ ALTER TABLE `Categories`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `InLists`
---
-ALTER TABLE `InLists`
-  ADD KEY `id_item` (`id_item`),
-  ADD KEY `id_list` (`id_list`);
-
---
 -- Indices de la tabla `Items`
 --
 ALTER TABLE `Items`
   ADD PRIMARY KEY (`id`),
   ADD KEY `priority` (`priority`),
-  ADD KEY `id_user` (`id_user`);
+  ADD KEY `id_user` (`id_user`),
+  ADD KEY `id_list` (`id_list`);
 
 --
 -- Indices de la tabla `Lists`
@@ -218,7 +196,7 @@ ALTER TABLE `Categories`
 -- AUTO_INCREMENT de la tabla `Items`
 --
 ALTER TABLE `Items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `Lists`
@@ -231,18 +209,12 @@ ALTER TABLE `Lists`
 --
 
 --
--- Filtros para la tabla `InLists`
---
-ALTER TABLE `InLists`
-  ADD CONSTRAINT `InLists_ibfk_1` FOREIGN KEY (`id_item`) REFERENCES `Items` (`id`),
-  ADD CONSTRAINT `InLists_ibfk_2` FOREIGN KEY (`id_list`) REFERENCES `Lists` (`id`);
-
---
 -- Filtros para la tabla `Items`
 --
 ALTER TABLE `Items`
   ADD CONSTRAINT `Items_ibfk_1` FOREIGN KEY (`priority`) REFERENCES `Priorities` (`id`),
-  ADD CONSTRAINT `Items_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `Users` (`id`);
+  ADD CONSTRAINT `Items_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `Users` (`id`),
+  ADD CONSTRAINT `Items_ibfk_3` FOREIGN KEY (`id_list`) REFERENCES `Lists` (`id`);
 
 --
 -- Filtros para la tabla `Lists`

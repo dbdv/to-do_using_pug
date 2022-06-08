@@ -59,7 +59,7 @@ h1 {
 
 .login-error {
   color: red;
-  font-size: calc(var(--font-size-general)-30%);
+  font-size: 0.7em;
   display: none;
 }
 .error-on {
