@@ -4,18 +4,26 @@ var List = require("../models/list.js");
 var db = require("../models/db");
 
 const getList = async function (req, res, next) {
+  console.log("session", req.session);
   try {
     await db.authenticate();
     console.log("Connection has been established successfully.");
-    let LISTS = await List.findAll();
-    let list = await List.findByPk(req.params.id, {
+    let LISTS = await List.findAll({
+      where: {
+        id_user: req.session.userID,
+      },
+    });
+    let list = await List.findOne({
+      where: {
+        id_user: req.session.userID,
+      },
       include: "Items",
     });
 
     //const testItems = list.getItems();
     //const itemsOfList = await list.getItems();
     //console.log(testItems);
-    console.log(list);
+    // console.log(list);
     res.render("list2.pug", {
       list: list,
       LISTS: LISTS,
@@ -35,7 +43,10 @@ const addList = async (req, res, next) => {
   try {
     await db.authenticate();
 
-    const inserted = await List.create(req.body);
+    const inserted = await List.create({
+      ...req.body,
+      id_user: req.session.userID,
+    });
 
     res.status(201).redirect("/");
   } catch (error) {

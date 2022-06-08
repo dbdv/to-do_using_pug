@@ -1,6 +1,7 @@
 // Models
 var Item = require("../models/item.js");
 var List = require("../models/list.js");
+var Category = require("../models/category");
 var db = require("../models/db");
 
 //
@@ -14,18 +15,23 @@ module.exports.getHomeInfo = async (req, res, next) => {
     await db.authenticate();
     console.log("Connection has been established successfully.");
 
-    let items;
-
-    items = await Item.findAll({
+    let items = await Item.findAll({
       where: {
         id_user: req.session.userID,
       },
     });
-    //console.log(items);
-    let lists = await List.findAll();
+    let lists = await List.findAll({
+      where: {
+        id_user: req.session.userID,
+      },
+    });
+
+    let categories = await Category.findAll();
+
     res.render("todos.pug", {
       TASKS: items,
       LISTS: lists,
+      CATEGORIES: categories,
       selected: null,
       userName: req.session.userName,
     });

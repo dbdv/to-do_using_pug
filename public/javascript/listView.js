@@ -2,11 +2,13 @@ let idList;
 
 window.onload = () => {
   const optionsParent = document.getElementById("optionsParent");
-  optionsParent.addEventListener("click", (e) => {
-    console.log(e);
-    if (e.target.name != "direc" && e.target.tagName === "LABEL")
-      e.target.classList.toggle("opSelected");
-  });
+  if (optionsParent) {
+    optionsParent.addEventListener("click", (e) => {
+      console.log(e);
+      if (e.target.name != "direc" && e.target.tagName === "LABEL")
+        e.target.classList.toggle("opSelected");
+    });
+  }
 
   idList = document.querySelector(".title").id;
   console.log(idList);
@@ -53,7 +55,73 @@ function addList() {
 
   return false;
 }
+async function addTask() {
+  const newTask = {
+    id: null,
+    title: document.querySelector("#title").value.toString(),
+    descrip: document.querySelector("#descrip").value.toString(),
+    priority: document.querySelector("input[name='priority']:checked").value,
+    state: document.querySelector("input[name='state']:checked").value,
+    creationDate: new Date(Date.now()),
+    deadline: document.querySelector("input[name='dl']").checked
+      ? document.querySelector("input[name='dldate']").value
+      : null,
+    resolutionDate: null,
+  };
+  const select = document.querySelector(".listCheckbox");
+  const listsID = idList;
+  setInterval(() => {
+    console.log(listsID);
+  }, 2000);
+  //- console.log("ID: ",listsID);
+  if (!newTask.title.length || !newTask.descrip.length) {
+    alert("No puede ingresar una tarea sin título y descrpción.");
+    return false;
+  }
 
+  //- console.log(typeof newTask.deadline)
+
+  if (
+    newTask.deadline !== null &&
+    new Date(newTask.deadline) < new Date(Date.now())
+  ) {
+    alert("No puede elegir una fecha que ya pasó!");
+    return false;
+  }
+
+  clearTitle();
+  clearDescrip();
+  await fetch("/item/add", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ newTask: newTask, id_list: listsID }),
+  }).finally(() => {
+    location.reload();
+  });
+
+  //   var xhttp = new XMLHttpRequest();
+  //   xhttp.open("POST", "/item/add", true);
+  //   xhttp.setRequestHeader("Content-Type", "application/json");
+  //   xhttp.onreadystatechange = function () {
+  //     if (this.readyState == 4 && this.status == 200) {
+  //       // Response
+  //       var response = this.responseText;
+  //     }
+  //   };
+  //   var data = { newTask: newTask, listsID: listsID };
+  //   console.log(data);
+  //   xhttp.send(JSON.stringify(data));
+
+  //   setTimeout(() => {
+  //     location.reload();
+  //   }, 500);
+
+  return false;
+}
+/* 
 function addTask() {
   const newTask = {
     id: null,
@@ -92,7 +160,7 @@ function addTask() {
   }
 
   var xhttp = new XMLHttpRequest();
-  xhttp.open("POST", `list/${idList}/item/add`, true);
+  xhttp.open("POST", `/list/${idList}/item/add`, true);
   xhttp.setRequestHeader("Content-Type", "application/json");
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
@@ -111,7 +179,7 @@ function addTask() {
   }, 500);
 
   return false;
-}
+} */
 
 function markAsResolve(id) {
   var xhttp = new XMLHttpRequest();

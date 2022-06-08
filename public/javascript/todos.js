@@ -13,7 +13,7 @@ function toggleModal(n) {
 }
 
 function addList() {
-  console.log(document.querySelector("#titleList"));
+  //console.log(document.querySelector("#titleList"));
   const newList = {
     id: null,
     title: document.querySelector("#titleList").value,
@@ -22,13 +22,16 @@ function addList() {
     creationDate: new Date(Date.now()),
   };
 
-  console.table(newList);
+  //console.table(newList);
+  const select = document.querySelector("#category");
+  const catID = select[select.selectedIndex].value;
+
+  newList.id_category = catID;
 
   if (!newList.title.length) {
     alert("La lista necesita un título");
     return false;
   }
-
   var xhttp = new XMLHttpRequest();
   xhttp.open("POST", "/list/add", true);
   xhttp.setRequestHeader("Content-Type", "application/json");
