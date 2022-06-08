@@ -1,6 +1,6 @@
-var { Sequelize} = require("sequelize");
+var { Sequelize } = require("sequelize");
 
-const db = new Sequelize("db_todo_prueba", "root", "", {
+const db = new Sequelize(`${process.env.DB}`, "root", "", {
   host: "localhost",
   dialect: "mysql",
 });

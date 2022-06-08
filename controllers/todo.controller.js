@@ -1,7 +1,6 @@
 // Models
 var Item = require("../models/item.js");
 var List = require("../models/list.js");
-const InList = require("../models/in_list.js");
 var db = require("../models/db");
 
 //
@@ -15,7 +14,7 @@ module.exports.getHomeInfo = async (req, res, next) => {
     items = await Item.findAll(/* {
       include: List,
     } */);
-    console.log(items);
+    //console.log(items);
     let lists = await List.findAll();
     res.render("todos.pug", { TASKS: items, LISTS: lists, selected: null });
   } catch (error) {

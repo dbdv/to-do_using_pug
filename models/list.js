@@ -1,6 +1,5 @@
 var { Model, DataTypes } = require("sequelize");
 var db = require("./db");
-const InList = require("./in_list");
 const Item = require("./item");
 
 class List extends Model {}

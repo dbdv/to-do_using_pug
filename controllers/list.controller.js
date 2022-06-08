@@ -1,7 +1,6 @@
 //Models
 var Item = require("../models/item.js");
 var List = require("../models/list.js");
-const InList = require("../models/in_list.js");
 var db = require("../models/db");
 
 const getList = async function (req, res, next) {
@@ -9,13 +8,18 @@ const getList = async function (req, res, next) {
     await db.authenticate();
     console.log("Connection has been established successfully.");
     let LISTS = await List.findAll();
-    let list = await List.findByPk(req.params.id);
-    const itemsOfList = await list.getItems();
-    // console.log(list);
+    let list = await List.findByPk(req.params.id, {
+      include: "Items",
+    });
+
+    //const testItems = list.getItems();
+    //const itemsOfList = await list.getItems();
+    //console.log(testItems);
+    console.log(list);
     res.render("list2.pug", {
       list: list,
       LISTS: LISTS,
-      ITEMS: itemsOfList,
+      ITEMS: list.Items, //itemsOfList,
       selected: null,
     });
   } catch (error) {

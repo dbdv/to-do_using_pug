@@ -1,16 +1,22 @@
 // Models
 var Item = require("../models/item.js");
 var List = require("../models/list.js");
-const InList = require("../models/in_list.js");
 var db = require("../models/db");
 
 const addItem = async (req, res, next) => {
   try {
     await db.authenticate();
     // console.table(req.body.newTask);
-    const inserted = await Item.create(req.body.newTask);
+    console.log(req.body);
+    const inserted = await Item.create({
+      ...req.body.newTask,
+      id_list: req.body.id_list,
+      id_user: 1,
+    });
     // console.log(inserted.id, req.body.listID);
-    await inserted.setLists(req.body.listsID);
+    //inserted.setLists(req.body.listsID);
+    console.log(inserted);
+    await inserted.save();
     res.status(201).redirect("/");
   } catch (error) {
     console.error("Unable to connect to the database to insert item:", error);
@@ -22,7 +28,6 @@ const deleteItem = async (req, res, next) => {
     await db.authenticate();
 
     const item = await Item.findByPk(req.params.id);
-    item.setLists(null);
     await item.destroy();
     // let items = await Item.findAll();
     // items = JSON.parse(JSON.stringify(items));
@@ -42,7 +47,7 @@ const markResolve = async (req, res, next) => {
 
     const item = await Item.findByPk(req.params.id);
     item.state = "Resuelta";
-    console.log(item)
+    console.log(item);
     item.save().then(() => {
       res.status(201).redirect("/");
     });
@@ -72,23 +77,23 @@ const markUnresolve = async (req, res, next) => {
 };
 
 const markResolving = async (req, res, next) => {
-    try {
-      await db.authenticate();
-  
-      const item = await Item.findByPk(req.params.id);
-      item.state = "Resolviendo";
-      item.save().then(() => {
-        res.status(201).redirect("/");
-      });
-    } catch (error) {
-      console.error("Unable to connect to the database to update item:", error);
-    }
-  };
+  try {
+    await db.authenticate();
+
+    const item = await Item.findByPk(req.params.id);
+    item.state = "Resolviendo";
+    item.save().then(() => {
+      res.status(201).redirect("/");
+    });
+  } catch (error) {
+    console.error("Unable to connect to the database to update item:", error);
+  }
+};
 
 module.exports = {
   addItem,
   deleteItem,
   markResolve,
   markResolving,
-  markUnresolve
+  markUnresolve,
 };

@@ -1,6 +1,5 @@
 const Admin = require("./admin");
 const Category = require("./category");
-const InList = require("./in_list");
 const Item = require("./item");
 const List = require("./list");
 const Priority = require("./priority");
@@ -38,21 +37,21 @@ Admin.belongsTo(User, {
 
 //Relaciones item-lista
 
-Item.belongsToMany(List, {
-  through: InList,
+List.hasMany(Item, {
   foreignKey: "id_item",
 });
 
 List.belongsToMany(Item, {
-  through: InList,
+  foreignKey: "id_item",
+});
+
+Item.belongsTo(List, {
   foreignKey: "id_list",
 });
 
-List.hasMany(InList);
-InList.belongsTo(User);
-
-Item.hasMany(InList);
-InList.belongsToMany(Item);
+Item.hasOne(List, {
+  foreignKey: "id_list",
+});
 
 //Relacion prioridad-item
 

@@ -245,7 +245,7 @@ body {
   width: 20px;
 }
 
-.myForm {
+/* .myForm {
   margin: 0;
   margin-bottom: 20px;
 }
@@ -254,7 +254,7 @@ body {
   width: 100%;
   height: 100%;
   padding: 5px;
-}
+} */
 
 .col-auto {
   padding-left: 0;
@@ -467,7 +467,7 @@ button:hover {
 }
 
 .deleting {
-  animation: deleting 1s;
+  animation: deleting .3s;
 }
 
 .deleting > button {
@@ -501,6 +501,8 @@ button:hover {
     opacity: 0;
     font-size: 0;
     margin: 0;
+    height: 0%;
+    display: none;
   }
 }
 

@@ -4,6 +4,7 @@ html
         title todo app
         link(rel='stylesheet' href='/stylesheets/todo.css')
         link(rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200')
+        script(defer src="/javascript/todos.js") 
 
     body(style="background-color:#313246;")
         div.header
@@ -92,10 +93,8 @@ html
                                     p=`Estado: ${task.state}`
                                     if task.deadline !== null
                                         p=`Fecha límite: ${task.deadline}`
-                                    if task.Lists !== undefined && task.Lists.length !== 0
-                                        p Listas: 
-                                            each list in task.Lists
-                                                =`"${list.title}" `
+                                    if task.id_list
+                                        p=`Lista ${task.id_list}`
                                 //-button(class="btn-close")
                                 div.buttons
                                     if task.state !== "Resuelta"
@@ -111,7 +110,7 @@ html
                 div.backOpacity
                 div(class="newTaskForm")
                     button(class="close-btn" onclick="toggleModal(1)") X
-                    form(action="/todo/add" method="POST" class="myForm")
+                    div(class="myForm")
                         div.modalTitle
                             h3 Nuevo item
                         div(class="newItemContainer")
@@ -126,15 +125,15 @@ html
                             div.prioritiesContainer 
                                 span Prioridad
                                 div.prioritiesDiv 
-                                    input(type="radio" name="priority" value="Baja" id="option-p-1")
+                                    input(type="radio" name="priority" value="1" id="option-p-1")
                                     label(for="option-p-1" class="option option-1") 
                                         div.priorities 
                                             span Baja 
-                                    input(type="radio" name="priority" value="Media" id="option-p-2" checked)
+                                    input(type="radio" name="priority" value="2" id="option-p-2" checked)
                                     label(for="option-p-2" class="option option-2") 
                                         div.priorities 
                                             span Medium
-                                    input(type="radio" name="priority" value="Alta" id="option-p-3")
+                                    input(type="radio" name="priority" value="3" id="option-p-3")
                                     label(for="option-p-3" class="option option-3") 
                                         div.priorities 
                                             span Alta
@@ -161,14 +160,14 @@ html
                                 input(type="date" name="dldate")
                         div
                             span Lista
-                            div.listsCheckboxes
+                            select(class="listCheckbox")
+                                option(value="0") Ninguna 
                                 each list in LISTS 
-                                    input(type="checkbox" class="listCheckbox" value=list.id)
-                                    label=list.title 
+                                    option(value=list.id)=list.title 
                         div.prioritiesContainer
                             div.prioritiesDiv
-                                button(class="add-btn" onclick="return addTask()") Agregar
-        script.
+                                button(class="add-btn" onclick="return addTask();") Agregar
+        //-- script.
 
             window.onload = ()=>{
                 const optionsParent = document.getElementById("optionsParent");

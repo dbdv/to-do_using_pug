@@ -1,0 +1,91 @@
+@import url("https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;700&display=swap");
+
+:root {
+  --bg-primary-color: #afafaf;
+  --primary-color: #0069d9;
+  --font: "Red Hat Display";
+  --font-size-general: 1.1rem;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: var(--font);
+  font-size: var(--font-size-general);
+  padding: 0;
+  margin: 0;
+}
+
+*::after {
+  box-sizing: border-box;
+}
+
+.main {
+  width: 100%;
+  height: 100vh;
+  background: var(--bg-primary-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login {
+  width: 500px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  /* gap: 20px; */
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border-radius: 10px;
+  position: relative;
+}
+
+h1 {
+  font-size: calc(var(--font-size-general) + 1rem);
+  position: absolute;
+  top: 0;
+  padding: 3px;
+}
+
+.login-inputs-group {
+  display: flex;
+  flex-direction: column;
+  height: 65px;
+  justify-content: flex-start;
+
+  border-radius: 10px;
+}
+
+.login-error {
+  color: red;
+  font-size: calc(var(--font-size-general)-30%);
+  display: none;
+}
+.error-on {
+  display: block;
+}
+
+input {
+  max-width: 300px;
+  padding: 5px;
+  border: 1px solid;
+  border-radius: 10px;
+}
+
+input:focus {
+  outline: 1px solid var(--primary-color);
+}
+
+button {
+  width: 100px;
+  padding: 5px;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  background: var(--primary-color);
+}
+
+button:hover {
+  cursor: pointer;
+}
