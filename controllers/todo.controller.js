@@ -5,18 +5,30 @@ var db = require("../models/db");
 
 //
 module.exports.getHomeInfo = async (req, res, next) => {
+  const token = req.session.token;
+  console.log(token);
+
+  if (token != "ok") res.send("mal mal");
+
   try {
     await db.authenticate();
     console.log("Connection has been established successfully.");
 
     let items;
 
-    items = await Item.findAll(/* {
-      include: List,
-    } */);
+    items = await Item.findAll({
+      where: {
+        id_user: req.session.userID,
+      },
+    });
     //console.log(items);
     let lists = await List.findAll();
-    res.render("todos.pug", { TASKS: items, LISTS: lists, selected: null });
+    res.render("todos.pug", {
+      TASKS: items,
+      LISTS: lists,
+      selected: null,
+      userName: req.session.userName,
+    });
   } catch (error) {
     console.error("Unable to connect to the database to get items:", error);
   }

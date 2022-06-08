@@ -30,15 +30,15 @@ async function login() {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ mail: mail, password: password }),
-  })
-    .then((res) => {
-      console.log(res);
-      if (res.status == 404) {
-        showError("mail-error");
-      }
-    })
-    .finally((res) => {
-      console.log(res);
-      console.log("end");
-    });
+  }).then((res) => {
+    console.log(res);
+    if (res.status == 404) {
+      showError("mail-error");
+    }
+    if (res.status == 403) {
+      showError("password-error");
+    }
+
+    if (res.status === 200) location.replace("/todo");
+  });
 }

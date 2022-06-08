@@ -49,6 +49,18 @@ function addList() {
   return false;
 }
 
+async function logout() {
+  fetch("/login/out", {
+    method: "POST",
+    headers: {
+      Accept: "XMLHttpRequest",
+      "Content-Type": "XMLHttpRequest",
+    },
+  }).then((res) => {
+    if (res.status == 200) location.replace("/");
+  });
+}
+
 async function addTask() {
   const newTask = {
     id: null,
@@ -64,7 +76,7 @@ async function addTask() {
   };
   const select = document.querySelector(".listCheckbox");
   const listsID =
-    select[select.selectedIndex].value === 0
+    select[select.selectedIndex].value == 0
       ? null
       : select[select.selectedIndex].value;
   setInterval(() => {

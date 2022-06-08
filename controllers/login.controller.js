@@ -10,12 +10,22 @@ const findUser = async (req, res, next) => {
     console.log(user);
     console.log(req.body);
     if (!user) res.status(404).send();
+    if (user.pass !== req.body.password) res.status(403).send();
+    req.session.token = "ok";
+    req.session.userID = user.id;
+    req.session.userName = user.name;
     res.status(200).send();
   } catch (error) {
     console.error("Unable to connect to the database to login: ", error);
   }
 };
 
+const logout = async (req, res, next) => {
+  req.session = null;
+  res.status(200).send();
+};
+
 module.exports = {
   findUser,
+  logout,
 };

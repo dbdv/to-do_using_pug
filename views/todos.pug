@@ -9,6 +9,7 @@ html
     body(style="background-color:#313246;")
         div.header
             h1 To-do list
+            button(onclick="logout()") Cerrar sesión
         div(style={"display":"flex",  "justify-content":"center", "width":"100%"})
             div.myLists 
                 h1 Mis listas
@@ -49,7 +50,7 @@ html
                                 button(class="add-btn" onclick="return addList()") Agregar 
             div(class="myContainer" style="background-color:white")
                 .container
-                    h1( class="text-center") Mis items
+                    h1( class="text-center") To-do list de #{userName}
                     button(class="openModal-btn" onclick="toggleModal(1)")
                         span AGREGAR
                         img(src="/images/circle-plus-solid.svg" )

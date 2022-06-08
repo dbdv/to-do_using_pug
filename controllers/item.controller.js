@@ -11,7 +11,7 @@ const addItem = async (req, res, next) => {
     const inserted = await Item.create({
       ...req.body.newTask,
       id_list: req.body.id_list,
-      id_user: 1,
+      id_user: req.session.userID,
     });
     // console.log(inserted.id, req.body.listID);
     //inserted.setLists(req.body.listsID);

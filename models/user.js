@@ -1,7 +1,7 @@
 var { Model, DataTypes } = require("sequelize");
 var db = require("./db");
-var item = require("./item");
-var list = require("./list");
+var Item = require("./item");
+const List = require("./list");
 
 class User extends Model {}
 User.init(
@@ -23,5 +23,15 @@ User.init(
   },
   { sequelize: db, modelName: "User" }
 );
+
+User.hasMany(List, {
+  as: "Lists",
+  foreignKey: "id_user",
+});
+
+User.hasMany(Item, {
+  as: "Items",
+  foreignKey: "id_user",
+});
 
 module.exports = User;
