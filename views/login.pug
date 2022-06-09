@@ -1,6 +1,7 @@
 doctype html
 html
   head
+    link(rel="icon", href="/images/check_16x16.ico")
     title Login
     link(rel="stylesheet", href="/stylesheets/login.css")
     script(defer src="/javascript/login.js")
@@ -9,11 +10,31 @@ html
         .login
           h1 Bienvenido
           div.login-inputs-group 
-            input(id="mail" type="text" placeholder="Email" onclick="hideError()")
+            input(id="mail" type="email" placeholder="Email" onclick="hideError(mail)")
             span(class="login-error mail-error ") Mail incorrecto
           div.login-inputs-group
-            input(id="password" type="password" placeholder="Contraseña" onclick="hideError()")
+            input(id="password" type="password" placeholder="Contraseña" onclick="hideError(password)")
             span(class="login-error password-error ") Contraseña incorrecta
-          button(onclick="login();") Ingresar
+          div.buttons 
+            button(onclick="login();") Ingresar
+            button(onclick="toggleRegisterForm()") Registrarme
+        .signup
+          h1 Registro de usuarios 
+          div.login-inputs-group  
+            input(id="sign-mail" type="email" placeholder="Email" onclick="hideError('sign-mail')")
+            span(class="login-error sign-mail-error") Mail incorrecto o asociado a otro usuario
+          div.login-inputs-group  
+            input(id="sign-name" type="text" placeholder="Nombre" onclick="hideError('sign-name')")
+            span(class="login-error sign-name-error") Debe ingresar un nombre
+          div.login-inputs-group  
+            input(id="sign-password" type="password" placeholder="Contraseña" onclick="hideError('sign-password')")
+            span(class="login-error sign-password-error") Debe ingresar una contraseña
+          div.buttons
+            button(onclick="toggleRegisterForm()") Cerrar
+            button(onclick="signup()") Registrarme
+          .msg
+            div
+              span(class="signup-succes") Registro exitoso
+              img(src="/images/succes.png", alt="succes") 
  
     

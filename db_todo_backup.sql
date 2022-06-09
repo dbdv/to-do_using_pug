@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 08-06-2022 a las 10:56:44
+-- Tiempo de generación: 09-06-2022 a las 04:19:27
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 7.4.29
 
@@ -29,17 +29,19 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `Categories` (
   `id` int(11) NOT NULL,
-  `cat` varchar(25) NOT NULL
+  `cat` varchar(25) NOT NULL,
+  `createdAt` date NOT NULL,
+  `updatedAt` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `Categories`
 --
 
-INSERT INTO `Categories` (`id`, `cat`) VALUES
-(16, 'Estudios'),
-(546, 'Varios'),
-(685, 'Personal');
+INSERT INTO `Categories` (`id`, `cat`, `createdAt`, `updatedAt`) VALUES
+(16, 'Estudios', '0000-00-00', '0000-00-00'),
+(546, 'Varios', '0000-00-00', '0000-00-00'),
+(685, 'Personal', '0000-00-00', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -70,9 +72,8 @@ INSERT INTO `Items` (`id`, `id_user`, `id_list`, `title`, `descrip`, `state`, `p
 (1, 1, NULL, 'Item de prueba 1', 'descripcion 1', 'Sin resolver', 2, NULL, NULL, '2022-05-31', '2022-05-31', '2022-06-01'),
 (2, 1, NULL, 'Item de prueba  2', 'Descripcion 2', 'Resuelta', 3, '2022-06-16', NULL, '2022-05-31', '2022-05-31', '2022-06-01'),
 (9, 1, NULL, 'probandou', 'asdasd', 'Resolviendo', 2, NULL, NULL, '2022-06-07', '2022-06-07', '2022-06-07'),
-(11, 1, NULL, 'dsads', 'asdasd', 'Resolviendo', 2, NULL, NULL, '2022-06-07', '2022-06-07', '2022-06-07'),
-(12, 1, NULL, 'iujndfsguisdgoijsdf', 'fhuisfdhiusdfiuhsdfsdf', 'Resolviendo', 2, NULL, NULL, '2022-06-07', '2022-06-07', '2022-06-07'),
-(13, 1, 1, 'sdgsdgsdg', 'sdgsdgsd', 'Resolviendo', 2, NULL, NULL, '2022-06-07', '2022-06-07', '2022-06-07');
+(17, 2, NULL, 'Primer item de Julio', 'Hostia!', 'Sin resolver', 2, NULL, NULL, '2022-06-08', '2022-06-08', '2022-06-08'),
+(18, 2, 3, 'Primer item en la lista de julio!', '468', 'Sin resolver', 3, NULL, NULL, '2022-06-08', '2022-06-08', '2022-06-08');
 
 -- --------------------------------------------------------
 
@@ -98,7 +99,8 @@ CREATE TABLE `Lists` (
 
 INSERT INTO `Lists` (`id`, `id_user`, `title`, `state`, `creationDate`, `resolutionDate`, `id_category`, `createdAt`, `updatedAt`) VALUES
 (1, 1, 'Lista de prueba 1', 'Sin resolver', '2022-05-31', NULL, 16, '2022-05-31', '2022-05-31'),
-(2, 1, 'Lista de prueba 2', 'Sin resolver', '2022-05-31', NULL, 16, '2022-05-31', '2022-05-31');
+(2, 1, 'Lista de prueba 2', 'Sin resolver', '2022-05-31', NULL, 16, '2022-05-31', '2022-05-31'),
+(3, 2, 'La primera lista de Julio!!', 'Sin resolver', '2022-06-08', NULL, 546, '2022-06-08', '2022-06-08');
 
 -- --------------------------------------------------------
 
@@ -141,7 +143,10 @@ CREATE TABLE `Users` (
 
 INSERT INTO `Users` (`id`, `name`, `email`, `pass`, `createdAt`, `updatedAt`) VALUES
 (1, 'Fernanda', 'unmail@mail.com', 'unapass', '0000-00-00', '0000-00-00'),
-(2, 'Julio', 'otromail@mail.com', 'otrapass', '0000-00-00', '0000-00-00');
+(2, 'Julio', 'otromail@mail.com', 'otrapass', '0000-00-00', '0000-00-00'),
+(3, 'walter', 'otrootromail@mail.com', 'walter', '2022-06-09', '2022-06-09'),
+(10, 'susana', 'unmailx@mail.com', 'susana', '2022-06-09', '2022-06-09'),
+(11, 'julian', 'otromailx@mail.com', 'julian', '2022-06-09', '2022-06-09');
 
 --
 -- Índices para tablas volcadas
@@ -196,13 +201,19 @@ ALTER TABLE `Categories`
 -- AUTO_INCREMENT de la tabla `Items`
 --
 ALTER TABLE `Items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `Lists`
 --
 ALTER TABLE `Lists`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `Users`
+--
+ALTER TABLE `Users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Restricciones para tablas volcadas
@@ -213,8 +224,8 @@ ALTER TABLE `Lists`
 --
 ALTER TABLE `Items`
   ADD CONSTRAINT `Items_ibfk_1` FOREIGN KEY (`priority`) REFERENCES `Priorities` (`id`),
-  ADD CONSTRAINT `Items_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `Users` (`id`),
-  ADD CONSTRAINT `Items_ibfk_3` FOREIGN KEY (`id_list`) REFERENCES `Lists` (`id`);
+  ADD CONSTRAINT `Items_ibfk_3` FOREIGN KEY (`id_list`) REFERENCES `Lists` (`id`),
+  ADD CONSTRAINT `Items_ibfk_4` FOREIGN KEY (`id_user`) REFERENCES `Users` (`id`);
 
 --
 -- Filtros para la tabla `Lists`

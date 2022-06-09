@@ -28,7 +28,8 @@
   align-items: center;
 }
 
-.login {
+.login,
+.signup {
   width: 500px;
   height: 300px;
   display: flex;
@@ -57,13 +58,72 @@ h1 {
   border-radius: 10px;
 }
 
-.login-error {
+.login-error,
+.signup-error {
   color: red;
   font-size: 0.7em;
   display: none;
 }
 .error-on {
   display: block;
+}
+
+.buttons {
+  width: 300px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.signup {
+  height: 400px;
+  /* display: none; */
+  position: absolute;
+  bottom: 100%;
+  transition: all 0.3s ease-in-out 0s;
+  opacity: 0;
+}
+
+.signup-on {
+  opacity: 1;
+  bottom: auto;
+}
+
+.msg {
+  position: absolute;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  bottom: 100%;
+  opacity: 0;
+  transition: 0.6s;
+}
+
+.msg > div {
+  width: 350px;
+  height: 100px;
+  border-radius: 10px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.msg > div > span {
+  color: lightgreen;
+  font-weight: bold;
+  font-size: calc(var(--font-size-general) + 1rem);
+}
+
+.msg > div > img {
+  width: 50px;
+}
+
+.msg-on {
+  display: flex;
+  opacity: 1;
+  bottom: calc(100% + 100px);
 }
 
 input {
@@ -78,7 +138,6 @@ input:focus {
 }
 
 button {
-  width: 100px;
   padding: 5px;
   border: none;
   border-radius: 10px;

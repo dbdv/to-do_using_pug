@@ -20,6 +20,26 @@ const findUser = async (req, res, next) => {
   }
 };
 
+const addUser = async (req, res, next) => {
+  try {
+    await db.authenticate();
+    const user = await User.findOne({
+      where: { email: req.body.mail },
+    });
+    console.log(req.body);
+    if (user) res.status(403).send();
+
+    await User.create({
+      name: req.body.name,
+      email: req.body.mail,
+      pass: req.body.password,
+    });
+    res.status(201).send();
+  } catch (error) {
+    console.error("Unable to connect to the database to add user: ", error);
+  }
+};
+
 const logout = async (req, res, next) => {
   req.session = null;
   res.status(200).send();
@@ -27,5 +47,6 @@ const logout = async (req, res, next) => {
 
 module.exports = {
   findUser,
+  addUser,
   logout,
 };
