@@ -28,12 +28,16 @@ module.exports.getHomeInfo = async (req, res, next) => {
 
     let categories = await Category.findAll();
 
+    const objDate = new Date();
+    const date = `${objDate.getFullYear()}-${objDate.getMonth()}-${objDate.getDate()}`;
+
     res.render("todos.pug", {
       TASKS: items,
       LISTS: lists,
       CATEGORIES: categories,
       selected: null,
       userName: req.session.userName,
+      date: date,
     });
   } catch (error) {
     console.error("Unable to connect to the database to get items:", error);
@@ -68,7 +72,18 @@ module.exports.setOrder = async (req, res, next) => {
       order: [...options],
     });
     let lists = await List.findAll();
-    res.render("todos.pug", { TASKS: items, LISTS: lists, selected: selected });
+
+    const objDate = new Date();
+    const date = `${objDate.getFullYear()}-${objDate.getMonth()}-${objDate.getDate()}`;
+
+    console.log("----------> SORTED");
+
+    res.render("todos.pug", {
+      TASKS: items,
+      LISTS: lists,
+      selected: selected,
+      date: date,
+    });
   } catch (error) {
     console.error("Unable to connect to the database to get items:", error);
   }

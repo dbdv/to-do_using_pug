@@ -4,6 +4,7 @@ var List = require("../models/list.js");
 var db = require("../models/db");
 
 const addItem = async (req, res, next) => {
+  if (!req.body.newTask) res.status(400).send();
   try {
     await db.authenticate();
     // console.table(req.body.newTask);

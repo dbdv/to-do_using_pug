@@ -72,9 +72,7 @@ async function addTask() {
     priority: document.querySelector("input[name='priority']:checked").value,
     state: document.querySelector("input[name='state']:checked").value,
     creationDate: new Date(Date.now()),
-    deadline: document.querySelector("input[name='dl']").checked
-      ? document.querySelector("input[name='dldate']").value
-      : null,
+    deadline: document.querySelector("input[name='dldate']").value,
     resolutionDate: null,
   };
   const select = document.querySelector(".listCheckbox");

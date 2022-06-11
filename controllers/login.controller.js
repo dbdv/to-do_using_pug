@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
 
 const findUser = async (req, res, next) => {
+  if (!req.body.mail || !req.body.password) res.status(400).send();
   try {
     await db.authenticate();
     const user = await User.findOne({
@@ -30,6 +31,8 @@ const findUser = async (req, res, next) => {
 };
 
 const addUser = async (req, res, next) => {
+  if (!req.body.mail || !req.body.password || !req.body.name)
+    res.status(400).send();
   try {
     await db.authenticate();
     const user = await User.findOne({
@@ -47,6 +50,9 @@ const addUser = async (req, res, next) => {
         email: req.body.mail,
         pass: cryptopass,
       });
+
+      console.log("----------> USER CREATED");
+
       res.status(201).send();
     });
   } catch (error) {
@@ -56,6 +62,7 @@ const addUser = async (req, res, next) => {
 
 const logout = async (req, res, next) => {
   req.session = null;
+  console.log("----------> SESSION CLOSE");
   res.status(200).send();
 };
 

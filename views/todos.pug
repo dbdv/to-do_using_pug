@@ -51,7 +51,7 @@ html
                                 button(class="add-btn" onclick="return addList()") Agregar 
             div(class="myContainer" style="background-color:white")
                 .container
-                    div
+                    div.header
                         h1( class="text-center") To-do list de #{userName}
                         button(onclick="logout()") Cerrar sesión
                     button(class="openModal-btn" onclick="toggleModal(1)")
@@ -161,7 +161,7 @@ html
                             div.prioritiesDiv
                                 span Fecha limite 
                                 input(type="checkbox" name="dl")
-                                input(type="date" name="dldate")
+                                input(type="date" name="dldate" min=date)
                         div
                             span Lista
                             select(class="listCheckbox")

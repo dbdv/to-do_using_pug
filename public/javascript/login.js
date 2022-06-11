@@ -24,6 +24,10 @@ async function login() {
     return;
   }
 
+  document
+    .querySelector(".loaderContainer")
+    .classList.add("loaderContainer-On");
+
   fetch("/login/in", {
     method: "POST",
     headers: {
@@ -34,9 +38,17 @@ async function login() {
   }).then((res) => {
     console.log(res);
     if (res.status == 404) {
+      document
+        .querySelector(".loaderContainer")
+        .classList.remove("loaderContainer-On");
+
       showError("mail-error");
     }
     if (res.status == 403) {
+      document
+        .querySelector(".loaderContainer")
+        .classList.remove("loaderContainer-On");
+
       showError("password-error");
     }
 
