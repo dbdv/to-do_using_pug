@@ -75,6 +75,7 @@ html
                                         label(for="ASC" class=`asc ` name="direc") Ascendente
                                         input(type="radio" name="direc" id="DESC" value="DESC" class="orderRadio" checked)
                                         label(for="DESC" class=`desc ` name="direc") Descendente
+                                button(onclick="cleanOrder();" style={"padding":"2px 5px"}) X
                                 button(onclick="setOrder();") Ordenar
                             ul(class="list" id=ulTodo)
                                 each task in ITEMS         

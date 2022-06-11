@@ -376,3 +376,7 @@ function deleteList(id) {
   }, 1000);
   return false;
 }
+
+function cleanOrder() {
+  document.location.href = `/list/${idList}`;
+}

@@ -10,10 +10,10 @@ html
         .login
           h1 Bienvenido
           div.login-inputs-group 
-            input(id="mail" type="email" placeholder="Email" onclick="hideError(mail)")
+            input(id="mail" type="email" placeholder="Email" onclick="hideError('mail')")
             span(class="login-error mail-error ") Mail incorrecto
           div.login-inputs-group
-            input(id="password" type="password" placeholder="Contraseña" onclick="hideError(password)")
+            input(id="password" type="password" placeholder="Contraseña" onclick="hideError('password')")
             span(class="login-error password-error ") Contraseña incorrecta
           div.buttons 
             button(onclick="login();") Ingresar

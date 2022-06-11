@@ -14,6 +14,8 @@ var itemRouter = require("./routes/item");
 var listRouter = require("./routes/list");
 var loginRouter = require("./routes/login");
 
+var { isLogged } = require("./middlewares/auth");
+
 var app = express();
 
 // view engine setup
@@ -29,9 +31,9 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 // app.use('/users', usersRouter);
-app.use("/todo", todoRouter);
-app.use("/list", listRouter);
-app.use("/item", itemRouter);
+app.use("/todo", isLogged, todoRouter);
+app.use("/list", isLogged, listRouter);
+app.use("/item", isLogged, itemRouter);
 app.use("/login", loginRouter);
 
 // catch 404 and forward to error handler

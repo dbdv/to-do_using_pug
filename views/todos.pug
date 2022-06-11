@@ -80,36 +80,36 @@ html
                                     label(for="DESC" class=`desc` name="direc") Descendente
                             button(onclick="cleanOrder();" style={"padding":"2px 5px"}) X
                             button(onclick="setOrder();" style={"padding":"2px"}) Ordenar
-                    ul(class="list" id=ulTodo)
-                        each task in TASKS         
-                            nav(class=`list-nav ${task.state}` id=task.id)
-                            
-                                li.list-item
-                                    span=task.title
-                                    p=`Detalle: ${task.descrip}`
-                                    case task.priority
-                                        when 1
-                                            p Prioridad: baja
-                                        when 2
-                                            p Prioridad: media
-                                        when 3
-                                            p Prioridad: alta
-                                    p=`Estado: ${task.state}`
-                                    if task.deadline !== null
-                                        p=`Fecha límite: ${task.deadline}`
-                                    if task.id_list
-                                        p=`Lista ${task.id_list}`
-                                //-button(class="btn-close")
-                                div.buttons
-                                    if task.state !== "Resuelta"
-                                        //button(id="unresolve-btn" value=task.id class="" onclick=`return markAsUnresolve(${task.id})`) Sin resolver
-                                        if task.state === "Resolviendo"
-                                            button(id="resolve-btn" value=task.id class="" onclick=`return markAsUnresolve(${task.id})`) Sin resolver
+                        ul(class="list" id=ulTodo)
+                            each task in TASKS         
+                                nav(class=`list-nav ${task.state}` id=task.id)
+                                
+                                    li.list-item
+                                        span=task.title
+                                        p=`Detalle: ${task.descrip}`
+                                        case task.priority
+                                            when 1
+                                                p Prioridad: baja
+                                            when 2
+                                                p Prioridad: media
+                                            when 3
+                                                p Prioridad: alta
+                                        p=`Estado: ${task.state}`
+                                        if task.deadline !== null
+                                            p=`Fecha límite: ${task.deadline}`
+                                        if task.id_list
+                                            p=`Lista ${task.id_list}`
+                                    //-button(class="btn-close")
+                                    div.buttons
+                                        if task.state !== "Resuelta"
+                                            //button(id="unresolve-btn" value=task.id class="" onclick=`return markAsUnresolve(${task.id})`) Sin resolver
+                                            if task.state === "Resolviendo"
+                                                button(id="resolve-btn" value=task.id class="" onclick=`return markAsUnresolve(${task.id})`) Sin resolver
+                                            else
+                                                button(id="resolve-btn" value=task.id class="" onclick=`return markAsResolving(${task.id})`) Resolviendo
+                                            button(id="resolve-btn" value=task.id class="" onclick=`return markAsResolve(${task.id})`) Resolver
                                         else
-                                            button(id="resolve-btn" value=task.id class="" onclick=`return markAsResolving(${task.id})`) Resolviendo
-                                        button(id="resolve-btn" value=task.id class="" onclick=`return markAsResolve(${task.id})`) Resolver
-                                    else
-                                    button(id="delete-btn" value=task.id class="btn btn-danger" onclick=`return deleteTask(${task.id})`) Borrar
+                                        button(id="delete-btn" value=task.id class="btn btn-danger" onclick=`return deleteTask(${task.id})`) Borrar
             div.modal-off
                 div.backOpacity
                 div(class="newTaskForm")

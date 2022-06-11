@@ -9,7 +9,7 @@ module.exports.getHomeInfo = async (req, res, next) => {
   const token = req.session.token;
   console.log(token);
 
-  if (token != "ok") res.send("mal mal");
+  // if (token != "ok") res.send("mal mal");
 
   try {
     await db.authenticate();

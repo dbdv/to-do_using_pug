@@ -1,5 +1,6 @@
 function hideError(span) {
-  document.querySelector(`.${span}-error`).classList.remove("error-on");
+  if (document.querySelector(`.${span}-error`))
+    document.querySelector(`.${span}-error`).classList.remove("error-on");
 }
 
 function showError(elementClass) {
