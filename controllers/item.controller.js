@@ -48,6 +48,7 @@ const markResolve = async (req, res, next) => {
 
     const item = await Item.findByPk(req.params.id);
     item.state = "Resuelta";
+    item.resolutionDate = new Date(Date.now());
     console.log(item);
     item.save().then(() => {
       res.status(201).redirect("/");

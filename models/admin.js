@@ -10,6 +10,9 @@ Admin.init(
       autoIncrement: true,
       primaryKey: true,
     },
+    id_user: {
+      type: DataTypes.INTEGER,
+    },
   },
   { sequelize: db, modelName: "Admin" }
 );

@@ -4,6 +4,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var cookieSession = require("cookie-session");
 var logger = require("morgan");
+var passport = require("passport");
 
 require("dotenv").config();
 
@@ -13,8 +14,25 @@ var todoRouter = require("./routes/todo");
 var itemRouter = require("./routes/item");
 var listRouter = require("./routes/list");
 var loginRouter = require("./routes/login");
+var authRouter = require("./routes/auth");
+var categoryRouter = require("./routes/category");
 
+//middlewares
 var { isLogged } = require("./middlewares/auth");
+
+//test
+
+const { test } = require("./passports/localAuth");
+
+//passport config
+
+passport.serializeUser(function (user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function (obj, done) {
+  done(null, obj);
+});
 
 var app = express();
 
@@ -29,12 +47,36 @@ app.use(cookieSession({ keys: ["order"] }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+//------------ TEST
+app.use(passport.initialize());
+app.use(passport.session());
+const GitHubStrategy = require("passport-github2").Strategy;
+
+passport.use(
+  new GitHubStrategy(
+    {
+      clientID: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+      callbackURL: "http://localhost:3000/auth/github/callback",
+    },
+    function (accessToken, refreshToken, profile, done) {
+      process.nextTick(function () {
+        // console.log(profile);
+        return done(null, profile);
+      });
+    }
+  )
+);
+
+//--------------- END TEST
 app.use("/", indexRouter);
 // app.use('/users', usersRouter);
 app.use("/login", loginRouter);
 app.use("/todo", isLogged, todoRouter);
 app.use("/list", isLogged, listRouter);
 app.use("/item", isLogged, itemRouter);
+app.use("/category", isLogged, categoryRouter);
+app.use("/auth", authRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

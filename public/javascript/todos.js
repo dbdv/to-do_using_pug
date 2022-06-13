@@ -132,6 +132,33 @@ async function addTask() {
   return false;
 }
 
+async function addCategory() {
+  const cat = document.querySelector("#titleCategory").value.toString();
+  await fetch("/category/add", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ category: cat }),
+  }).then((res) => {
+    if (res.status == 409) {
+      document
+        .querySelector(".category-error")
+        .classList.add("category-error-on");
+      return false;
+    }
+    location.reload();
+  });
+}
+
+function clearCategoryError() {
+  if (document.querySelector(".category-error"))
+    document
+      .querySelector(".category-error")
+      .classList.remove("category-error-on");
+}
+
 function markAsResolve(id) {
   var xhttp = new XMLHttpRequest();
   xhttp.open("POST", `/item/markAsResolved/${id}`, true);
@@ -269,6 +296,11 @@ function clearTitle() {
 
 function clearTitleList() {
   document.querySelector("#titleList").value = "";
+  return false;
+}
+
+function clearTitleCategory() {
+  document.querySelector("#titleCategory").value = "";
   return false;
 }
 

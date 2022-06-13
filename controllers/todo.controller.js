@@ -24,6 +24,8 @@ module.exports.getHomeInfo = async (req, res, next) => {
       where: {
         id_user: req.session.userID,
       },
+      include: "Category",
+      order: [["id_category", "ASC"]],
     });
 
     let categories = await Category.findAll();
@@ -38,6 +40,7 @@ module.exports.getHomeInfo = async (req, res, next) => {
       selected: null,
       userName: req.session.userName,
       date: date,
+      admin: req.session.admin,
     });
   } catch (error) {
     console.error("Unable to connect to the database to get items:", error);

@@ -15,8 +15,11 @@ html
                 button(class="openModalList-btn" onclick="toggleModal(0)")
                         span AGREGAR
                         img(src="/images/circle-plus-solid.svg" )
+                button(class="openModalList-btn" onclick="toggleModal(1)")
+                    span Nueva categoria
+                    img(src="/images/circle-plus-solid.svg" )
                 each list in LISTS 
-                        a(href=`/list/${list.id}`)=list.title
+                        a(href=`/list/${list.id}`)=`(${list.Category.cat}) -> ${list.title}`
             div.modal-off
                 div.backOpacity
                 div(class="newTaskForm newListForm")
@@ -49,12 +52,25 @@ html
                         div.prioritiesContainer
                             div.prioritiesDiv
                                 button(class="add-btn" onclick="return addList()") Agregar 
+            div.modal-off
+                div.backOpacity
+                div(class="newTaskForm newListForm")
+                    button(class="close-btn" onclick="toggleModal(1)") X
+                    div(class="myForm")
+                        div.modalTitle 
+                            h3 Nueva categoría
+                        div(class="newItemContainer newCategoyDiv")
+                            div(class="newItemDiv" style="margin-left: 5px;margin-right: 2.5px;")
+                                input(class="" placeholder="Título"  name="newCategory" id="titleCategory" required="required" onclick="clearCategoryError()")
+                                button(class="material-symbols-outlined" onclick="return clearTitleCategory()" ) clear
+                            span(class="category-error") Esta categoría ya existe
+                            button(class="add-btn" onclick="return addCategory()") Agregar 
             div(class="myContainer" style="background-color:white")
                 .container
                     div.header
                         h1( class="text-center") To-do list de #{userName}
                         button(onclick="logout()") Cerrar sesión
-                    button(class="openModal-btn" onclick="toggleModal(1)")
+                    button(class="openModal-btn" onclick="toggleModal(2)")
                         span AGREGAR
                         img(src="/images/circle-plus-solid.svg" )
                     div.orderBy 
@@ -97,6 +113,8 @@ html
                                         p=`Estado: ${task.state}`
                                         if task.deadline !== null
                                             p=`Fecha límite: ${task.deadline}`
+                                        if task.state == "Resuelta"
+                                            p=`Resuelta: ${task.resolutionDate}`
                                         if task.id_list
                                             p=`Lista ${task.id_list}`
                                     //-button(class="btn-close")
@@ -113,7 +131,7 @@ html
             div.modal-off
                 div.backOpacity
                 div(class="newTaskForm")
-                    button(class="close-btn" onclick="toggleModal(1)") X
+                    button(class="close-btn" onclick="toggleModal(2)") X
                     div(class="myForm")
                         div.modalTitle
                             h3 Nuevo item

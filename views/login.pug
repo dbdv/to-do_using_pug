@@ -18,17 +18,18 @@ html
             span(class="login-error password-error ") Contraseña incorrecta
           div.buttons 
             button(onclick="login();") Ingresar
+            button(onclick="githubLogin();") Github
             button(onclick="toggleRegisterForm()") Registrarme
         .signup
           h1 Registro de usuarios 
           div.login-inputs-group  
-            input(id="sign-mail" type="email" placeholder="Email" onclick="hideError('sign-mail')")
+            input(id="sign-mail" name="email" type="email" placeholder="Email" onclick="hideError('sign-mail')")
             span(class="login-error sign-mail-error") Mail incorrecto o asociado a otro usuario
           div.login-inputs-group  
-            input(id="sign-name" type="text" placeholder="Nombre" onclick="hideError('sign-name')")
+            input(id="sign-name" name="name" type="text" placeholder="Nombre" onclick="hideError('sign-name')")
             span(class="login-error sign-name-error") Debe ingresar un nombre
           div.login-inputs-group  
-            input(id="sign-password" type="password" placeholder="Contraseña" onclick="hideError('sign-password')")
+            input(id="sign-password" name="password" type="password" placeholder="Contraseña" onclick="hideError('sign-password')")
             span(class="login-error sign-password-error") Debe ingresar una contraseña
           div.buttons
             button(onclick="toggleRegisterForm()") Cerrar

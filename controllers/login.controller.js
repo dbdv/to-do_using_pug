@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Admin = require("../models/admin");
 const db = require("../models/db");
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
@@ -13,8 +14,18 @@ const findUser = async (req, res, next) => {
     // console.log(user);
     // console.log(req.body);
     if (!user) res.status(404).send();
-    bcrypt.compare(req.body.password, user.pass, (err, result) => {
+    bcrypt.compare(req.body.password, user.pass, async (err, result) => {
       if (!result) res.status(403).send();
+
+      const admin = await Admin.findOne({
+        where: {
+          id_user: user.id,
+        },
+      });
+
+      console.log(admin);
+
+      req.session.admin = admin;
 
       req.session.token = jwt.sign({ id: user.id }, process.env.SECRET, {
         expiresIn: 60 * 60 * 24 * 7,

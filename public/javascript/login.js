@@ -56,6 +56,10 @@ async function login() {
   });
 }
 
+function githubLogin() {
+  location.replace("/auth/github");
+}
+
 async function signup() {
   const mail = document.querySelector("#sign-mail").value,
     password = document.querySelector("#sign-password").value,

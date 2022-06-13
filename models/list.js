@@ -1,6 +1,6 @@
 var { Model, DataTypes } = require("sequelize");
 var db = require("./db");
-const Item = require("./item");
+const Category = require("./category");
 
 class List extends Model {}
 List.init(
@@ -39,4 +39,9 @@ List.init(
   { sequelize: db, modelName: "List" }
 );
 
+Category.hasMany(List, { as: "Lists", foreignKey: "id_category" });
+List.belongsTo(Category, {
+  as: "Category",
+  foreignKey: "id_category",
+});
 module.exports = List;
