@@ -504,12 +504,12 @@ button:hover {
 .deleting > button {
   display: none;
 }
-
+/* 
 .SinResolver {
 }
 
 .Resolviendo {
-}
+} */
 
 .Resuelta > li,
 .Resuelta > li > p {

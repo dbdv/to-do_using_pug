@@ -86,6 +86,7 @@ module.exports.setOrder = async (req, res, next) => {
       LISTS: lists,
       selected: selected,
       date: date,
+      admin: req.session.admin,
     });
   } catch (error) {
     console.error("Unable to connect to the database to get items:", error);

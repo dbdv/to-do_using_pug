@@ -23,7 +23,7 @@ const findUser = async (req, res, next) => {
         },
       });
 
-      console.log(admin);
+      console.log("----ADMIN: ", admin);
 
       req.session.admin = admin;
 

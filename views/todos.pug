@@ -15,9 +15,10 @@ html
                 button(class="openModalList-btn" onclick="toggleModal(0)")
                         span AGREGAR
                         img(src="/images/circle-plus-solid.svg" )
-                button(class="openModalList-btn" onclick="toggleModal(1)")
-                    span Nueva categoria
-                    img(src="/images/circle-plus-solid.svg" )
+                if admin !== null
+                    button(class="openModalList-btn" onclick="toggleModal(1)")
+                        span Nueva categoria
+                        img(src="/images/circle-plus-solid.svg" )
                 each list in LISTS 
                         a(href=`/list/${list.id}`)=`(${list.Category.cat}) -> ${list.title}`
             div.modal-off
@@ -51,20 +52,21 @@ html
                                         option(value=cat.id)=cat.cat 
                         div.prioritiesContainer
                             div.prioritiesDiv
-                                button(class="add-btn" onclick="return addList()") Agregar 
-            div.modal-off
-                div.backOpacity
-                div(class="newTaskForm newListForm")
-                    button(class="close-btn" onclick="toggleModal(1)") X
-                    div(class="myForm")
-                        div.modalTitle 
-                            h3 Nueva categoría
-                        div(class="newItemContainer newCategoyDiv")
-                            div(class="newItemDiv" style="margin-left: 5px;margin-right: 2.5px;")
-                                input(class="" placeholder="Título"  name="newCategory" id="titleCategory" required="required" onclick="clearCategoryError()")
-                                button(class="material-symbols-outlined" onclick="return clearTitleCategory()" ) clear
-                            span(class="category-error") Esta categoría ya existe
-                            button(class="add-btn" onclick="return addCategory()") Agregar 
+                                button(class="add-btn" onclick="return addList()") Agregar
+            if admin !== null 
+                div.modal-off
+                    div.backOpacity
+                    div(class="newTaskForm newListForm")
+                        button(class="close-btn" onclick="toggleModal(1)") X
+                        div(class="myForm")
+                            div.modalTitle 
+                                h3 Nueva categoría
+                            div(class="newItemContainer newCategoyDiv")
+                                div(class="newItemDiv" style="margin-left: 5px;margin-right: 2.5px;")
+                                    input(class="" placeholder="Título"  name="newCategory" id="titleCategory" required="required" onclick="clearCategoryError()")
+                                    button(class="material-symbols-outlined" onclick="return clearTitleCategory()" ) clear
+                                span(class="category-error") Esta categoría ya existe
+                                button(class="add-btn" onclick="return addCategory()") Agregar 
             div(class="myContainer" style="background-color:white")
                 .container
                     div.header
