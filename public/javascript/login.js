@@ -57,6 +57,9 @@ async function login() {
 }
 
 function githubLogin() {
+  document
+    .querySelector(".loaderContainer")
+    .classList.add("loaderContainer-On");
   location.replace("/auth/github");
 }
 

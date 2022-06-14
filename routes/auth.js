@@ -23,7 +23,7 @@ router.get(
 //   which, in this example, will redirect the user to the home page.
 router.get(
   "/github/callback",
-  passport.authenticate("github", { failureRedirect: "/login" }),
+  passport.authenticate("github", { failureRedirect: "/" }),
   async function (req, res) {
     try {
       await db.authenticate();
@@ -41,6 +41,7 @@ router.get(
       });
       req.session.userID = user.id;
       req.session.userName = user.name;
+      req.session.admin = null;
     } catch (error) {
       console.error(
         "Unable to connect to the database to login with github: ",

@@ -20,10 +20,6 @@ var categoryRouter = require("./routes/category");
 //middlewares
 var { isLogged } = require("./middlewares/auth");
 
-//test
-
-const { test } = require("./passports/localAuth");
-
 //passport config
 
 passport.serializeUser(function (user, done) {

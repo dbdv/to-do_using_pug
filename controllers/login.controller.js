@@ -23,7 +23,7 @@ const findUser = async (req, res, next) => {
         },
       });
 
-      console.log("----ADMIN: ", admin);
+      // console.log("----ADMIN: ", admin);
 
       req.session.admin = admin;
 
@@ -73,6 +73,8 @@ const addUser = async (req, res, next) => {
 
 const logout = async (req, res, next) => {
   req.session = null;
+  req.logout();
+  console.log(req.logout);
   console.log("----------> SESSION CLOSE");
   res.status(200).send();
 };
