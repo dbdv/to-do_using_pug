@@ -12,18 +12,26 @@ const getList = async function (req, res, next) {
       where: {
         id_user: req.session.userID,
       },
+      include: "Category",
+      order: [["id_category", "ASC"]],
     });
     let list = await List.findOne({
       where: {
         id_user: req.session.userID,
+        id: req.params.id,
       },
       include: "Items",
     });
 
-    //const testItems = list.getItems();
-    //const itemsOfList = await list.getItems();
-    //console.log(testItems);
-    // console.log(list);
+    const listResolved = Object.values(list.getDataValue("Items")).some(
+      (k) => k.state !== "Resuelta"
+    );
+
+    if (!listResolved)
+      await list.update({
+        state: "Resuelta",
+      });
+
     res.render("list2.pug", {
       list: list,
       LISTS: LISTS,
@@ -39,7 +47,7 @@ const getList = async function (req, res, next) {
 };
 
 const addList = async (req, res, next) => {
-  console.log(req.body);
+  //console.log(req.body);
   try {
     await db.authenticate();
 
@@ -54,6 +62,28 @@ const addList = async (req, res, next) => {
   }
 };
 
+const deleteList = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    await db.authenticate();
+
+    await Item.destroy({
+      where: {
+        id_list: id,
+      },
+    });
+    await List.destroy({
+      where: {
+        id: id,
+      },
+    });
+    res.status(201).redirect("/");
+  } catch (error) {
+    console.error("Unable to connect to the database to insert LIST:", error);
+  }
+};
+
 const removeItem = async (req, res, next) => {
   try {
     // console.log(req)
@@ -62,18 +92,15 @@ const removeItem = async (req, res, next) => {
 
     await db.authenticate();
 
-    const link = await InList.findOne({
-      where: { id_item: id_item, id_list: id_list },
-    });
-
-    console.log(link);
-
-    InList.destroy({
-      where: {
-        id_item: link.id_item,
-        id_list: link.id_list,
-      },
-    }).then(() => {
+    Item.update(
+      { id_list: null },
+      {
+        where: {
+          id_item: link.id_item,
+          id_list: link.id_list,
+        },
+      }
+    ).then(() => {
       res.redirect(201, "/list/" + id_list);
     });
   } catch (error) {
@@ -112,7 +139,13 @@ const sortList = async (req, res, next) => {
 
   try {
     await db.authenticate();
-    let LISTS = await List.findAll();
+    let LISTS = List.findAll({
+      where: {
+        id_user: req.session.userID,
+      },
+      include: "Category",
+      order: [["id_category", "ASC"]],
+    });
     // console.log("--------------------------------------------------------");
     const ListSorted = await List.findOne({
       where: {
@@ -130,6 +163,7 @@ const sortList = async (req, res, next) => {
     //   "-----------------------------------------------------------------"
     // );
     const itemsOfList = ListSorted.getDataValue("Items");
+    console.log(itemsOfList);
     // console.log(list);
     res.render("list2.pug", {
       list: ListSorted,
@@ -142,10 +176,38 @@ const sortList = async (req, res, next) => {
   }
 };
 
+const resolveList = (req, res, next) => {
+  const { id } = req.params;
+  console.log(id);
+  Item.update(
+    {
+      state: "Resuelta",
+    },
+    {
+      where: {
+        id_list: id,
+      },
+    }
+  ).then(() => {
+    List.update(
+      { state: "Resuelta" },
+      {
+        where: {
+          id: id,
+        },
+      }
+    ).then(() => {
+      res.status(201).send();
+    });
+  });
+};
+
 module.exports = {
   getList,
   addList,
   removeItem,
   deleteItem,
   sortList,
+  resolveList,
+  deleteList,
 };

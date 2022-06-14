@@ -63,11 +63,13 @@ async function addTask() {
     priority: document.querySelector("input[name='priority']:checked").value,
     state: document.querySelector("input[name='state']:checked").value,
     creationDate: new Date(Date.now()),
-    deadline: document.querySelector("input[name='dl']").checked
-      ? document.querySelector("input[name='dldate']").value
-      : null,
+    deadline: document.querySelector("input[name='dldate']").value,
     resolutionDate: null,
   };
+
+  if (!newTask.deadline.length) newTask.deadline = null;
+  console.log("DEADLINE: ", newTask.deadline);
+
   const select = document.querySelector(".listCheckbox");
   const listsID = idList;
   setInterval(() => {
@@ -351,30 +353,36 @@ function removeItem(id_item, id_list) {
   return false;
 }
 
-function deleteList(id) {
+function deleteList(state) {
   const items = document.getElementsByClassName("list-nav");
+  console.log(state);
 
-  if (items.length !== 0) {
+  if (items.length !== 0 && state !== "Resuelta") {
     alert("La lista solo puede eliminarse si está vacía.");
     return false;
   }
 
-  var xhttp = new XMLHttpRequest();
-  xhttp.open("POST", `/list/delete/${id}`, true);
-  xhttp.setRequestHeader("Content-Type", "XMLHttpRequest");
-  xhttp.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      // Response
-      var response = this.responseText;
-    }
-  };
-  xhttp.send();
+  fetch(`/list/${idList}/delete`, {
+    method: "POST",
+    headers: {
+      Accept: "XMLHttpRequest",
+      "Content-Type": "XMLHttpRequest",
+    },
+  }).finally(() => {
+    location.replace("/todo");
+  });
+}
 
-  setTimeout(() => {
-    //- div.remove();
-    window.location.replace("/");
-  }, 1000);
-  return false;
+function resolveList() {
+  fetch(`/list/${idList}/resolve`, {
+    method: "POST",
+    headers: {
+      Accept: "XMLHttpRequest",
+      "Content-Type": "XMLHttpRequest",
+    },
+  }).finally(() => {
+    location.reload();
+  });
 }
 
 function cleanOrder() {

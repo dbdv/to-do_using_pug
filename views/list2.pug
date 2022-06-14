@@ -17,7 +17,7 @@ html
                 //- ul 
                 a(href="/todo") Inicio 
                 each list in LISTS 
-                    a(href=`/list/${list.id}`)=list.title
+                    a(href=`/list/${list.id}`)=`(${list.Category.cat}) -> ${list.title}`
             div.modal-off
                 div.backOpacity
                 div(class="newTaskForm newListForm")
@@ -49,7 +49,8 @@ html
             div(class="myContainer" style="background-color:white")
                 .container
                     h1( class="text-center title" id=list.id)=list.title
-                    button(onclick=`deleteList(${list.id})`) Eliminar lista
+                    button(onclick=`resolveList()`) Resolver lista
+                    button(onclick=`deleteList("${list.state}")`) Eliminar lista
                     button(class="openModal-btn" onclick="toggleModal(1)")
                         span AGREGAR
                         img(src="/images/circle-plus-solid.svg" )

@@ -8,11 +8,17 @@ const {
   removeItem,
   deleteItem,
   sortList,
+  resolveList,
+  deleteList,
 } = require("../controllers/list.controller");
 
 router.get("/:id", getList);
 
 router.post("/add", addList);
+
+router.post("/:id/resolve", resolveList);
+
+router.post("/:id/delete", deleteList);
 
 router.post("/unlink/:id", removeItem);
 

@@ -89,7 +89,8 @@ async function addTask() {
     return false;
   }
 
-  //- console.log(typeof newTask.deadline)
+  if (!newTask.deadline.length) newTask.deadline = null;
+  console.log("DEADLINE: ", newTask.deadline);
 
   if (
     newTask.deadline !== null &&
