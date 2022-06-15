@@ -54,6 +54,11 @@ Item.init(
   { sequelize: db, modelName: "Item" }
 );
 
+Item.belongsTo(List, {
+  as: "List",
+  foreignKey: "id_list",
+});
+
 List.hasMany(Item, { as: "Items", foreignKey: "id_list" });
 
 module.exports = Item;

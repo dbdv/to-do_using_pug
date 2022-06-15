@@ -19,6 +19,7 @@ module.exports.getHomeInfo = async (req, res, next) => {
       where: {
         id_user: req.session.userID,
       },
+      include: "List",
     });
     let lists = await List.findAll({
       where: {

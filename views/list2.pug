@@ -49,8 +49,9 @@ html
             div(class="myContainer" style="background-color:white")
                 .container
                     h1( class="text-center title" id=list.id)=list.title
-                    button(onclick=`resolveList()`) Resolver lista
-                    button(onclick=`deleteList("${list.state}")`) Eliminar lista
+                    div.prioritiesDiv
+                        button(onclick=`resolveList()` style={"padding":"5px", "color":"white", "background": "#0069d9", "border":"none", "border-radius":"5px"}) Resolver lista
+                        button(onclick=`deleteList("${list.state}")` style={"padding":"5px", "color":"white", "background": "tomato", "border":"none", "border-radius":"5px"}) Eliminar lista
                     button(class="openModal-btn" onclick="toggleModal(1)")
                         span AGREGAR
                         img(src="/images/circle-plus-solid.svg" )
@@ -76,8 +77,8 @@ html
                                         label(for="ASC" class=`asc ` name="direc") Ascendente
                                         input(type="radio" name="direc" id="DESC" value="DESC" class="orderRadio" checked)
                                         label(for="DESC" class=`desc ` name="direc") Descendente
-                                button(onclick="cleanOrder();" style={"padding":"2px 5px"}) X
-                                button(onclick="setOrder();") Ordenar
+                                button(onclick="cleanOrder();" style={"padding":"3px 5px", "color":"white", "background": "#0069d9", "border":"none", "border-radius":"5px"}) X
+                                button(onclick="setOrder();" style={"padding":"3px 5px", "color":"white", "background": "#0069d9", "border":"none", "border-radius":"5px"}) Ordenar
                             ul(class="list" id=ulTodo)
                                 each task in ITEMS         
                                     nav(class=`list-nav ${task.state}` id=task.id)
@@ -103,7 +104,7 @@ html
                                                     button(id="resolve-btn" value=task.id class="" onclick=`return markAsResolving(${task.id})`) Resolviendo
                                                 button(id="resolve-btn" value=task.id class="" onclick=`return markAsResolve(${task.id})`) Resolver
                                             else
-                                            button(id="delte-btn" class="btn btn-danger" onclick=`return removeItem(${task.id}, ${list.id})`) Sacar 
+                                            button(id="delte-btn" class="btn btn-danger" onclick=`return removeItem(${task.id}, ${list.id})` style={"padding":"5px", "color":"white", "background": "#0069d9", "border":"none", "border-radius":"5px"}) Sacar 
                                             ////-
                                             button(id="delete-btn" value=task.id class="btn btn-danger" onclick=`return deleteTask(${task.id})`) Borrar
                     else 
@@ -161,9 +162,10 @@ html
                                 input(type="checkbox" name="dl")
                                 input(type="date" name="dldate")
                         div
-                            span Lista
-                            div.listsCheckboxes
-                                span(class="text-center")=list.title
+                            .prioritiesDiv
+                                span Lista
+                                div.listsCheckboxes
+                                    span(class="text-center")=list.title
                         div.prioritiesContainer
                             div.prioritiesDiv
                                 button(class="add-btn" onclick="return addTask()") Agregar

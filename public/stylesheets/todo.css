@@ -23,18 +23,16 @@ body {
 }
 /*------------------------------*/
 
-/* .header {
+.header {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* position: absolute; */
-/* margin: 5px 0; 
-  /* color: white; 
+  margin: 5px 0;
   width: 100%;
-  /* background: #fafafa; 
+  background: #fafafa;
   padding: 5px 0;
   text-align: center;
-}*/
+}
 
 .header > h1 {
   width: 200px;

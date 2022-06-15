@@ -71,8 +71,8 @@ html
                 .container
                     div.header
                         h1( class="text-center") To-do list de #{userName}
-                        button(onclick="logout()") Cerrar sesión
-                    button(class="openModal-btn" onclick="toggleModal(2)")
+                        button(onclick="logout()" style={"padding":"5px", "color":"white", "background": "#0d1117", "border":"none", "border-radius":"5px"}) Cerrar sesión
+                    button(class="openModal-btn" onclick=`toggleModal(${admin !== null ? 2 : 1})`)
                         span AGREGAR
                         img(src="/images/circle-plus-solid.svg" )
                     div.orderBy 
@@ -96,8 +96,8 @@ html
                                     label(for="ASC" class=`asc ` name="direc") Ascendente
                                     input(type="radio" name="direc" id="DESC" value="DESC" class="orderRadio" checked)
                                     label(for="DESC" class=`desc` name="direc") Descendente
-                            button(onclick="cleanOrder();" style={"padding":"2px 5px"}) X
-                            button(onclick="setOrder();" style={"padding":"2px"}) Ordenar
+                            button(onclick="cleanOrder();" style={"padding":"2px 5px", "color":"white", "background": "#0069d9", "border":"none", "border-radius":"5px"}) X
+                            button(onclick="setOrder();" style={"padding":"2px", "color":"white", "background": "#0069d9", "border":"none", "border-radius":"5px"}) Ordenar
                         ul(class="list" id=ulTodo)
                             each task in TASKS         
                                 nav(class=`list-nav ${task.state}` id=task.id)
@@ -118,7 +118,7 @@ html
                                         if task.state == "Resuelta"
                                             p=`Resuelta: ${task.resolutionDate}`
                                         if task.id_list
-                                            p=`Lista ${task.id_list}`
+                                            p=`Lista: ${task.List.title}`
                                     //-button(class="btn-close")
                                     div.buttons
                                         if task.state !== "Resuelta"
@@ -133,7 +133,7 @@ html
             div.modal-off
                 div.backOpacity
                 div(class="newTaskForm")
-                    button(class="close-btn" onclick="toggleModal(2)") X
+                    button(class="close-btn" onclick=`toggleModal(${admin !== null ? 2 : 1})`) X
                     div(class="myForm")
                         div.modalTitle
                             h3 Nuevo item
@@ -183,11 +183,12 @@ html
                                 input(type="checkbox" name="dl")
                                 input(type="date" name="dldate" min=date)
                         div
-                            span Lista
-                            select(class="listCheckbox")
-                                option(value="0") Ninguna 
-                                each list in LISTS 
-                                    option(value=list.id)=list.title 
+                            div.prioritiesDiv
+                                span Lista
+                                select(class="listCheckbox")
+                                    option(value="0") Ninguna 
+                                    each list in LISTS 
+                                        option(value=list.id)=list.title 
                         div.prioritiesContainer
                             div.prioritiesDiv
                                 button(class="add-btn" onclick="return addTask();") Agregar
