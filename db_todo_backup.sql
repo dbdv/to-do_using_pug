@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 13-06-2022 a las 20:54:45
+-- Tiempo de generación: 15-06-2022 a las 06:54:32
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 7.4.29
 
@@ -99,7 +99,8 @@ INSERT INTO `Items` (`id`, `id_user`, `id_list`, `title`, `descrip`, `state`, `p
 (21, 12, 4, 'crypto item', 'dasfsa', 'Sin resolver', 3, NULL, NULL, '2022-06-09', '2022-06-09', '2022-06-09'),
 (22, 13, NULL, 'un item de test', 'algo', 'Sin resolver', 1, NULL, NULL, '2022-06-11', '2022-06-11', '2022-06-11'),
 (23, 13, NULL, 'probando', '123', 'Sin resolver', 3, '2022-06-30', NULL, '2022-06-11', '2022-06-11', '2022-06-11'),
-(24, 14, NULL, 'Item para cuenta github ', 'test', 'Resuelta', 3, '2022-06-24', '2022-06-13', '2022-06-13', '2022-06-13', '2022-06-13');
+(29, 13, 6, 'algo', 'algo', 'Resuelta', 3, '2023-04-01', NULL, '2022-06-14', '2022-06-14', '2022-06-14'),
+(33, 17, 11, 'algo', 'algo', 'Resolviendo', 3, NULL, NULL, '2022-06-15', '2022-06-15', '2022-06-15');
 
 -- --------------------------------------------------------
 
@@ -128,10 +129,9 @@ INSERT INTO `Lists` (`id`, `id_user`, `title`, `state`, `creationDate`, `resolut
 (2, 1, 'Lista de prueba 2', 'Sin resolver', '2022-05-31', NULL, 16, '2022-05-31', '2022-05-31'),
 (3, 2, 'La primera lista de Julio!!', 'Sin resolver', '2022-06-08', NULL, 546, '2022-06-08', '2022-06-08'),
 (4, 12, 'una lista para crypto', 'Sin resolver', '2022-06-09', NULL, 685, '2022-06-09', '2022-06-09'),
-(5, 13, 'una lista para test', 'Sin resolver', '2022-06-13', NULL, 546, '2022-06-13', '2022-06-13'),
+(5, 13, 'una lista para test', 'Resuelta', '2022-06-13', NULL, 546, '2022-06-13', '2022-06-14'),
 (6, 13, 'otra lista', 'Resuelta', '2022-06-13', NULL, 546, '2022-06-13', '2022-06-13'),
-(7, 13, 'otra otra', 'Sin resolver', '2022-06-13', NULL, 16, '2022-06-13', '2022-06-13'),
-(8, 13, 'otra otra otra', 'Sin resolver', '2022-06-13', NULL, 546, '2022-06-13', '2022-06-13');
+(11, 17, 'una lista en cuenta github', 'Resuelta', '2022-06-15', NULL, 16, '2022-06-15', '2022-06-15');
 
 -- --------------------------------------------------------
 
@@ -180,7 +180,9 @@ INSERT INTO `Users` (`id`, `name`, `email`, `pass`, `createdAt`, `updatedAt`) VA
 (11, 'julian', 'otromailx@mail.com', 'julian', '2022-06-09', '2022-06-09'),
 (12, 'crypto', 'mailcrypto@mail.com', '$2b$10$YZkIURGT3XuK2N88SzlC7.3eHlt0cetYnVjc2fcHDM2UPKVICWVKO', '2022-06-09', '2022-06-09'),
 (13, 'test', 'test@test.com', '$2b$10$YZtrjfT0apLWQ9lgpqelhe1SeSuZVSALABf5PL1QFwlF6G..qGE3e', '2022-06-11', '2022-06-11'),
-(14, 'Daniel Bustillos', '69542340', '', '2022-06-13', '2022-06-13');
+(15, 'nombre', 'unmail@mail.com', '$2b$10$Nh0r/hnc23OuQHaygX/VL.tn/EgCSbF5aQ/oRK/2Thu74OfEq0fUG', '2022-06-14', '2022-06-14'),
+(16, 'nombre', 'ununmail@mail.com', '$2b$10$RzTnSndgNa/uOoUdJXB98eQLdr2cnZ1ZG3HIxsLqYluytv3Fqw5Vm', '2022-06-14', '2022-06-14'),
+(17, 'Daniel Bustillos', '69542340', '', '2022-06-14', '2022-06-14');
 
 --
 -- Índices para tablas volcadas
@@ -248,19 +250,19 @@ ALTER TABLE `Categories`
 -- AUTO_INCREMENT de la tabla `Items`
 --
 ALTER TABLE `Items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT de la tabla `Lists`
 --
 ALTER TABLE `Lists`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `Users`
 --
 ALTER TABLE `Users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- Restricciones para tablas volcadas

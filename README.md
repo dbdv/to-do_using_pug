@@ -27,7 +27,7 @@
 > Ejecución
 
 - Ejercutar
-  `npm start`
+  `$ npm start`
 - Ingresar a _<a href="http://localhost:3000" target="_blank"> localhost:3000 </a>_
 
 _Nota: Al ejecutar el comando se limpiará la consola, de no querer esto ejecute en su lugar:_ `$ npm run dev`
