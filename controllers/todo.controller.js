@@ -7,7 +7,7 @@ var db = require("../models/db");
 //
 module.exports.getHomeInfo = async (req, res, next) => {
   const token = req.session.token;
-  console.log(token);
+  // console.log(token);
 
   // if (token != "ok") res.send("mal mal");
 
@@ -72,10 +72,23 @@ module.exports.setOrder = async (req, res, next) => {
     let items;
 
     items = await Item.findAll({
-      /* include: "Lists", */
+      where: {
+        id_user: req.session.userID,
+      },
+      include: "List",
       order: [...options],
     });
-    let lists = await List.findAll();
+    let lists = await List.findAll({
+      where: {
+        id_user: req.session.userID,
+      },
+      include: "Category",
+      order: [["id_category", "ASC"]],
+    });
+
+    let categories = await Category.findAll();
+
+    // console.log(lists);
 
     const objDate = new Date();
     const date = `${objDate.getFullYear()}-${objDate.getMonth()}-${objDate.getDate()}`;
@@ -85,6 +98,7 @@ module.exports.setOrder = async (req, res, next) => {
     res.render("todos.pug", {
       TASKS: items,
       LISTS: lists,
+      CATEGORIES: categories,
       selected: selected,
       date: date,
       admin: req.session.admin,

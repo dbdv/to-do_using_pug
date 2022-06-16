@@ -86,22 +86,27 @@ const deleteList = async (req, res, next) => {
 
 const removeItem = async (req, res, next) => {
   try {
-    // console.log(req)
-    const id_list = req.body.id_list;
-    const id_item = req.body.id_item;
+    const { id_item, id_list } = req.body;
 
-    await db.authenticate();
+    // await db.authenticate();
 
-    Item.update(
-      { id_list: null },
-      {
-        where: {
-          id_item: link.id_item,
-          id_list: link.id_list,
-        },
-      }
-    ).then(() => {
-      res.redirect(201, "/list/" + id_list);
+    // Item.update(
+    //   { id_list: null },
+    //   {
+    //     where: {
+    //       id_item: id_item,
+    //     },
+    //   }
+    // ).then(() => {
+    //   console.log(id_item, id_list);
+    //   res.redirect(201, "/list/" + id_list);
+    // });
+
+    const item = await Item.findByPk(id_item);
+    item.id_list = null;
+    item.save().then(() => {
+      console.log("-----------> Item unlinked");
+      res.status(201).redirect("/list/" + id_list);
     });
   } catch (error) {
     console.error("Unable to connect to the database to unlink item:", error);
@@ -128,7 +133,7 @@ const sortList = async (req, res, next) => {
 
   Object.keys(req.params).map((k) => {
     if (k !== "direc" && k !== "idList" && req.params[k] !== undefined) {
-      options.push([Item, `${req.params[k]}`, `${req.params.direc}`]);
+      options.push(["Items", `${req.params[k]}`, `${req.params.direc}`]);
       selected[req.params[k]] = true;
     }
   });
@@ -151,7 +156,7 @@ const sortList = async (req, res, next) => {
       where: {
         id: req.params.idList,
       },
-      include: [{ model: Item }],
+      include: [{ model: Item, as: "Items" }],
       order: [...options],
       //  order: [...options]
     });

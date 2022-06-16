@@ -22,7 +22,8 @@ html
                 div.backOpacity
                 div(class="newTaskForm newListForm")
                     button(class="close-btn" onclick="toggleModal(0)") X
-                    form(action="/list/add" method="POST" class="myForm")
+                    //form(action="/list/add" method="POST" class="myForm")
+                    .myForm
                         div.modalTitle 
                             h3 Nueva lista
                         div(class="newItemContainer")
@@ -113,7 +114,8 @@ html
                 div.backOpacity
                 div(class="newTaskForm")
                     button(class="close-btn" onclick="toggleModal(1)") X
-                    form(action="/todo/add" method="POST" class="myForm")
+                    //form(action="/todo/add" method="POST" class="myForm")
+                    .myForm
                         div.modalTitle
                             h3 Nuevo item
                         div(class="newItemContainer")
@@ -159,8 +161,8 @@ html
                         div.deadlineContainer 
                             div.prioritiesDiv
                                 span Fecha limite 
-                                input(type="checkbox" name="dl")
-                                input(type="date" name="dldate")
+                                //input(type="checkbox" name="dl")
+                                input(type="date" pattern="\d{4}-\d{2}-\d{2}" name="dldate" min=`${date}`)
                         div
                             .prioritiesDiv
                                 span Lista

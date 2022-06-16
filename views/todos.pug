@@ -114,7 +114,7 @@ html
                                                 p Prioridad: alta
                                         p=`Estado: ${task.state}`
                                         if task.deadline !== null
-                                            p=`Fecha límite: ${task.deadline}`
+                                            p=`Fecha límite: ${task.deadline.split("-").reverse().join("-")}`
                                         if task.state == "Resuelta"
                                             p=`Resuelta: ${task.resolutionDate}`
                                         if task.id_list
@@ -180,8 +180,8 @@ html
                         div.deadlineContainer 
                             div.prioritiesDiv
                                 span Fecha limite 
-                                input(type="checkbox" name="dl")
-                                input(type="date" name="dldate" min=date)
+                                //input(type="checkbox" name="dl")
+                                input(type="date" name="dldate" min=`${date}`)
                         div
                             div.prioritiesDiv
                                 span Lista

@@ -72,9 +72,9 @@ async function addTask() {
 
   const select = document.querySelector(".listCheckbox");
   const listsID = idList;
-  setInterval(() => {
-    console.log(listsID);
-  }, 2000);
+  // setInterval(() => {
+  //   console.log(listsID);
+  // }, 2000);
   //- console.log("ID: ",listsID);
   if (!newTask.title.length || !newTask.descrip.length) {
     alert("No puede ingresar una tarea sin título y descrpción.");
@@ -88,7 +88,7 @@ async function addTask() {
     new Date(newTask.deadline) < new Date(Date.now())
   ) {
     alert("No puede elegir una fecha que ya pasó!");
-    return false;
+    return;
   }
 
   clearTitle();
@@ -327,30 +327,17 @@ function clearDescrip() {
 }
 
 function removeItem(id_item, id_list) {
-  var xhttp = new XMLHttpRequest();
-  xhttp.open("POST", `/list/unlink/${id_item}`, true);
-  xhttp.setRequestHeader("Content-Type", "application/json");
-  xhttp.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      // Response
-      var response = this.responseText;
-    }
-  };
-  //- console.log("id de list: ",id_list)
-  //- console.log("id de item: ",id_item)
   var data = { id_item: id_item, id_list: id_list };
-
-  //- console.log("la data: ", data)
-  //- console.log(JSON.stringify(data))
-  xhttp.send(JSON.stringify(data));
-
-  //- const div = document.getElementById(id_item)//document.querySelector("#"+id);
-  //- div.classList.add("removing");
-  setTimeout(() => {
-    //- div.remove();
-    location.reload();
-  }, 1000);
-  return false;
+  fetch(`/list/unlink/${id_item}`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  }).then((res) => {
+    if (res.status == 200) location.reload();
+  });
 }
 
 function deleteList(state) {
