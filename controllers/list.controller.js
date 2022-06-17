@@ -83,22 +83,10 @@ const removeItem = async (req, res, next) => {
   try {
     const { id_item, id_list } = req.body;
 
-    // await db.authenticate();
-
-    // Item.update(
-    //   { id_list: null },
-    //   {
-    //     where: {
-    //       id_item: id_item,
-    //     },
-    //   }
-    // ).then(() => {
-    //   console.log(id_item, id_list);
-    //   res.redirect(201, "/list/" + id_list);
-    // });
-
     const item = await Item.findByPk(id_item);
-    const list = await List.findByPk(item.id_list);
+    const list = await List.findByPk(item.id_list, {
+      include: "Items",
+    });
     item.id_list = null;
     item.save().then(async () => {
       console.log("-----------> Item unlinked");

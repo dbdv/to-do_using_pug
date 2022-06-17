@@ -17,13 +17,14 @@ const addItem = async (req, res, next) => {
     // console.log(inserted.id, req.body.listID);
     //inserted.setLists(req.body.listsID);
     // console.log(inserted);
-    if (inserted && inserted.state != "Resuelta") {
+    if (inserted.id_list && inserted.state != "Resuelta") {
       const list = await List.findByPk(inserted.id_list);
       list.state = "Sin resolver";
       await list.save();
-      console.log("----------> ITEM AGREGADO");
-      res.status(201).redirect("/");
+      console.log("----------> LISTA ACTUALIZADA");
     }
+    console.log("----------> ITEM AGREGADO");
+    res.status(201).redirect("/");
   } catch (error) {
     console.error("Unable to connect to the database to insert item:", error);
   }
@@ -34,18 +35,20 @@ const deleteItem = async (req, res, next) => {
     await db.authenticate();
     // console.log(req.params.id);
     const item = await Item.findByPk(req.params.id);
-    const list = await List.findByPk(item.id_list, {
-      include: "Items",
-    });
-    const listResolved = Object.values(list.getDataValue("Items")).some(
-      (k) => k.state !== "Resuelta"
-    );
-
-    if (!listResolved) {
-      await list.update({
-        state: "Resuelta",
+    if (item.id_list) {
+      const list = await List.findByPk(item.id_list, {
+        include: "Items",
       });
-      console.log("-----------> LISTA ACTUALIZADA A RESUELTA");
+      const listResolved = Object.values(list.getDataValue("Items")).some(
+        (k) => k.state !== "Resuelta"
+      );
+
+      if (!listResolved) {
+        await list.update({
+          state: "Resuelta",
+        });
+        console.log("-----------> LISTA ACTUALIZADA A RESUELTA");
+      }
     }
     await item.destroy();
     // let items = await Item.findAll();
