@@ -13,7 +13,8 @@ const findUser = async (req, res, next) => {
     });
     // console.log(user);
     // console.log(req.body);
-    if (!user) res.status(404).send();
+    if (!user) return res.status(404).send();
+
     bcrypt.compare(req.body.password, user.pass, async (err, result) => {
       if (!result) res.status(403).send();
 
@@ -49,7 +50,7 @@ const addUser = async (req, res, next) => {
     const user = await User.findOne({
       where: { email: req.body.mail },
     });
-    console.log(req.body);
+    // console.log(req.body);
     if (user) res.status(403).send();
 
     let cryptopass;
@@ -74,7 +75,6 @@ const addUser = async (req, res, next) => {
 const logout = async (req, res, next) => {
   req.session = null;
   req.logout();
-  console.log(req.logout);
   console.log("----------> SESSION CLOSE");
   res.status(200).send();
 };

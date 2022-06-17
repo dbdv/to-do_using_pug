@@ -43,7 +43,11 @@ html
                                     label(for="option-list-s-2" class="option option-2") 
                                         div.priorities 
                                             span Resuelta
-                        
+                        div  
+                            div 
+                                select(id="category")
+                                    each cat in CATEGORIES 
+                                        option(value=cat.id)=cat.cat 
                         div.prioritiesContainer
                             div.prioritiesDiv
                                 button(class="add-btn" onclick="return addList()") Agregar 

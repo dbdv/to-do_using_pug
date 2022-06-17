@@ -34,8 +34,9 @@ router.get(
           pass: "",
         },
       });
-      console.log("CREATED: ", created);
-      console.log("USER: ", user);
+      console.log("CALLBAK DE GITHUB PASSPORT");
+      // console.log("CREATED: ", created);
+      // console.log("USER: ", user);
       req.session.token = jwt.sign({ id: user.id }, process.env.SECRET, {
         expiresIn: 60 * 60 * 24 * 7,
       });
@@ -48,8 +49,8 @@ router.get(
         error
       );
     }
-    console.log(req.user.id);
-    console.log(req.user.displayName);
+    // console.log(req.user.id);
+    // console.log(req.user.displayName);
     // console.log(req.user);
     res.redirect("/todo");
   }

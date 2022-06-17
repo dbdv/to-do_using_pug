@@ -1,7 +1,7 @@
 window.onload = () => {
   const optionsParent = document.getElementById("optionsParent");
   optionsParent.addEventListener("click", (e) => {
-    console.log(e);
+    // console.log(e);
     if (e.target.name != "direc" && e.target.tagName === "LABEL")
       e.target.classList.toggle("opSelected");
   });
@@ -81,7 +81,7 @@ async function addTask() {
       ? null
       : select[select.selectedIndex].value;
   setInterval(() => {
-    console.log(listsID);
+    // console.log(listsID);
   }, 2000);
   //- console.log("ID: ",listsID);
   if (!newTask.title.length || !newTask.descrip.length) {
@@ -90,7 +90,7 @@ async function addTask() {
   }
 
   if (!newTask.deadline.length) newTask.deadline = null;
-  console.log("DEADLINE: ", newTask.deadline);
+  // console.log("DEADLINE: ", newTask.deadline);
 
   if (
     newTask.deadline !== null &&
@@ -112,23 +112,6 @@ async function addTask() {
   }).finally(() => {
     location.reload();
   });
-
-  //   var xhttp = new XMLHttpRequest();
-  //   xhttp.open("POST", "/item/add", true);
-  //   xhttp.setRequestHeader("Content-Type", "application/json");
-  //   xhttp.onreadystatechange = function () {
-  //     if (this.readyState == 4 && this.status == 200) {
-  //       // Response
-  //       var response = this.responseText;
-  //     }
-  //   };
-  //   var data = { newTask: newTask, listsID: listsID };
-  //   console.log(data);
-  //   xhttp.send(JSON.stringify(data));
-
-  //   setTimeout(() => {
-  //     location.reload();
-  //   }, 500);
 
   return false;
 }

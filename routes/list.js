@@ -22,7 +22,7 @@ router.post("/:id/delete", deleteList);
 
 router.post("/unlink/:id", removeItem);
 
-router.post("/delete/:id", deleteItem);
+// router.post("/delete/:id", deleteItem);
 
 router.get(`/:idList/orderBy/:ord1?/:ord2?/:ord3?/:direc`, sortList);
 

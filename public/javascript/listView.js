@@ -4,14 +4,14 @@ window.onload = () => {
   const optionsParent = document.getElementById("optionsParent");
   if (optionsParent) {
     optionsParent.addEventListener("click", (e) => {
-      console.log(e);
+      // console.log(e);
       if (e.target.name != "direc" && e.target.tagName === "LABEL")
         e.target.classList.toggle("opSelected");
     });
   }
 
   idList = document.querySelector(".title").id;
-  console.log(idList);
+  // console.log(idList);
 };
 
 function toggleModal(n) {
@@ -20,7 +20,7 @@ function toggleModal(n) {
 }
 
 function addList() {
-  console.log(document.querySelector("#titleList"));
+  //console.log(document.querySelector("#titleList"));
   const newList = {
     id: null,
     title: document.querySelector("#titleList").value,
@@ -29,7 +29,10 @@ function addList() {
     creationDate: new Date(Date.now()),
   };
 
-  console.table(newList);
+  const select = document.querySelector("#category");
+  const catID = select[select.selectedIndex].value;
+
+  newList.id_category = catID;
 
   if (!newList.title.length) {
     alert("La lista necesita un título");
@@ -68,7 +71,7 @@ async function addTask() {
   };
 
   if (!newTask.deadline.length) newTask.deadline = null;
-  console.log("DEADLINE: ", newTask.deadline);
+  // console.log("DEADLINE: ", newTask.deadline);
 
   const select = document.querySelector(".listCheckbox");
   const listsID = idList;
@@ -100,88 +103,11 @@ async function addTask() {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ newTask: newTask, id_list: listsID }),
-  }).finally(() => {
-    location.reload();
   });
-
-  //   var xhttp = new XMLHttpRequest();
-  //   xhttp.open("POST", "/item/add", true);
-  //   xhttp.setRequestHeader("Content-Type", "application/json");
-  //   xhttp.onreadystatechange = function () {
-  //     if (this.readyState == 4 && this.status == 200) {
-  //       // Response
-  //       var response = this.responseText;
-  //     }
-  //   };
-  //   var data = { newTask: newTask, listsID: listsID };
-  //   console.log(data);
-  //   xhttp.send(JSON.stringify(data));
-
-  //   setTimeout(() => {
-  //     location.reload();
-  //   }, 500);
+  location.reload();
 
   return false;
 }
-/* 
-function addTask() {
-  const newTask = {
-    id: null,
-    title: document.querySelector("#title").value.toString(),
-    descrip: document.querySelector("#descrip").value.toString(),
-    priority: document.querySelector("input[name='priority']:checked").value,
-    state: document.querySelector("input[name='state']:checked").value,
-    creationDate: new Date(Date.now()),
-    deadline: document.querySelector("input[name='dl']").checked
-      ? document.querySelector("input[name='dldate']").value
-      : null,
-    resolutionDate: null,
-  };
-  //- const selectedLists = document.getElementsByClassName("listCheckbox");
-  //- console.log(typeof selectedLists)
-
-  //- for(const sl in selectedLists){
-  //-     if(selectedLists[sl].checked)
-  //-         listsID.push(selectedLists[sl].value);
-  //- }
-
-  //- console.log("ID: ",listsID);
-  //- if(!newTask.title.length || !newTask.descrip.length){
-  //-     alert("No puede ingresar una tarea sin título y descrpción.")
-  //-     return false;
-  //- }
-
-  //- console.log(typeof newTask.deadline)
-
-  if (
-    newTask.deadline !== null &&
-    new Date(newTask.deadline) < new Date(Date.now())
-  ) {
-    alert("No puede elegir una fecha que ya pasó!");
-    return false;
-  }
-
-  var xhttp = new XMLHttpRequest();
-  xhttp.open("POST", `/list/${idList}/item/add`, true);
-  xhttp.setRequestHeader("Content-Type", "application/json");
-  xhttp.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      // Response
-      var response = this.responseText;
-    }
-  };
-  var data = { newTask: newTask };
-  console.log(data);
-  xhttp.send(JSON.stringify(data));
-  clearTitle();
-  clearDescrip();
-
-  setTimeout(() => {
-    location.reload();
-  }, 500);
-
-  return false;
-} */
 
 function markAsResolve(id) {
   var xhttp = new XMLHttpRequest();
@@ -256,7 +182,7 @@ function markAsResolving(id) {
 }
 
 function deleteTask(id) {
-  //console.log(id)
+  // console.log(id);
 
   var xhttp = new XMLHttpRequest();
   xhttp.open("POST", `/item/delete/${id}`, true);
@@ -344,20 +270,21 @@ function deleteList(state) {
   const items = document.getElementsByClassName("list-nav");
   console.log(state);
 
-  if (items.length !== 0 && state !== "Resuelta") {
-    alert("La lista solo puede eliminarse si está vacía.");
+  if (items.length == 0 || state == "Resuelta") {
+    // console.log("llegó al fetch");
+    fetch(`/list/${idList}/delete`, {
+      method: "POST",
+      headers: {
+        Accept: "XMLHttpRequest",
+        "Content-Type": "XMLHttpRequest",
+      },
+    }).finally(() => {
+      location.replace("/todo");
+    });
     return false;
   }
-
-  fetch(`/list/${idList}/delete`, {
-    method: "POST",
-    headers: {
-      Accept: "XMLHttpRequest",
-      "Content-Type": "XMLHttpRequest",
-    },
-  }).finally(() => {
-    location.replace("/todo");
-  });
+  alert("La lista solo puede eliminarse si está vacía o resuelta.");
+  return false;
 }
 
 function resolveList() {

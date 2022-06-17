@@ -1,10 +1,11 @@
 //Models
 var Item = require("../models/item.js");
 var List = require("../models/list.js");
+var Category = require("../models/category");
 var db = require("../models/db");
 
 const getList = async function (req, res, next) {
-  console.log("session", req.session);
+  // console.log("session", req.session);
   try {
     await db.authenticate();
     console.log("Connection has been established successfully.");
@@ -23,18 +24,12 @@ const getList = async function (req, res, next) {
       include: "Items",
     });
 
-    const listResolved = Object.values(list.getDataValue("Items")).some(
-      (k) => k.state !== "Resuelta"
-    );
-
-    if (!listResolved)
-      await list.update({
-        state: "Resuelta",
-      });
+    let categories = await Category.findAll();
 
     res.render("list2.pug", {
       list: list,
       LISTS: LISTS,
+      CATEGORIES: categories,
       ITEMS: list.Items, //itemsOfList,
       selected: null,
     });
@@ -103,9 +98,20 @@ const removeItem = async (req, res, next) => {
     // });
 
     const item = await Item.findByPk(id_item);
+    const list = await List.findByPk(item.id_list);
     item.id_list = null;
-    item.save().then(() => {
+    item.save().then(async () => {
       console.log("-----------> Item unlinked");
+      const listResolved = Object.values(list.getDataValue("Items")).some(
+        (k) => k.state !== "Resuelta"
+      );
+
+      if (!listResolved) {
+        await list.update({
+          state: "Resuelta",
+        });
+        console.log("-----------> LISTA ACTUALIZADA A RESUELTA");
+      }
       res.status(201).redirect("/list/" + id_list);
     });
   } catch (error) {
@@ -113,7 +119,7 @@ const removeItem = async (req, res, next) => {
   }
 };
 
-const deleteItem = async (req, res, next) => {
+/* const deleteItem = async (req, res, next) => {
   try {
     await db.authenticate();
 
@@ -126,7 +132,7 @@ const deleteItem = async (req, res, next) => {
     console.error("Unable to connect to the database to unlink item:", error);
   }
 };
-
+ */
 const sortList = async (req, res, next) => {
   let options = [];
   let selected = {};
@@ -140,7 +146,7 @@ const sortList = async (req, res, next) => {
 
   selected[req.params.direc] = true;
 
-  console.log(options);
+  // console.log(options);
 
   try {
     await db.authenticate();
@@ -168,7 +174,7 @@ const sortList = async (req, res, next) => {
     //   "-----------------------------------------------------------------"
     // );
     const itemsOfList = ListSorted.getDataValue("Items");
-    console.log(itemsOfList);
+    // console.log(itemsOfList);
     // console.log(list);
     res.render("list2.pug", {
       list: ListSorted,
@@ -183,7 +189,7 @@ const sortList = async (req, res, next) => {
 
 const resolveList = (req, res, next) => {
   const { id } = req.params;
-  console.log(id);
+  // console.log(id);
   Item.update(
     {
       state: "Resuelta",
@@ -211,7 +217,7 @@ module.exports = {
   getList,
   addList,
   removeItem,
-  deleteItem,
+  // deleteItem,
   sortList,
   resolveList,
   deleteList,
